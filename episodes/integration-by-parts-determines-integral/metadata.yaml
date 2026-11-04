@@ -1,0 +1,32 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {repo_url} and {chapters} are filled in at publish time.
+
+long:
+  title: "Integrate x^5 Without the Power Rule"
+  title_alternatives:
+    - "Integration by Parts Is Enough"
+    - "The Power Rule, Rebuilt From Integration by Parts"
+  description: |
+    Forget the power rule. Keep integration by parts, plus two small facts. That's
+    enough to work out the integral of every polynomial, and there's a picture of a
+    rectangle that shows why the power rule divides by n + 1.
+
+    Challenge: which rules force a machine to be the derivative on polynomials?
+    Answer in the comments.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+    Narration: an AI clone of my own voice reading a script I wrote.
+  tags: [calculus, integration by parts, power rule, math, integrals, proof, manim]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "An integral that solves itself"
+    caption: "Integration by parts can hand you back the integral you started with. That's how it works out x^2/2, then x^3/3, and on up the power rule. #calculus #math"
+  short2:
+    title: "Integration by parts is a rectangle"
+    caption: "The area under y = t^k is exactly 1/(k+1) of its rectangle. Integration by parts shows why. #calculus #math"
