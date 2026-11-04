@@ -1,5 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
 # {repo_url} and {chapters} are filled in at publish time.
+# Descriptions keep line breaks as written: one line per paragraph.
 
 long:
   title: "Integrate x^5 Without the Power Rule"
@@ -7,12 +8,9 @@ long:
     - "Integration by Parts Is Enough"
     - "The Power Rule, Rebuilt From Integration by Parts"
   description: |
-    Forget the power rule. Keep integration by parts, plus two small facts. That's
-    enough to work out the integral of every polynomial, and there's a picture of a
-    rectangle that shows why the power rule divides by n + 1.
+    Forget the power rule. Keep integration by parts, plus two small facts. That's enough to work out the integral of every polynomial, and there's a picture of a rectangle that shows why the power rule divides by n + 1.
 
-    Challenge: which rules force a machine to be the derivative on polynomials?
-    Answer in the comments.
+    Challenge: which rules force a machine to be the derivative on polynomials? Answer in the comments.
 
     {chapters}
 
