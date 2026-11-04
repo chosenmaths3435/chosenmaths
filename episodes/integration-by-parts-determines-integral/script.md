@@ -6,7 +6,7 @@
 > struck through and fade.
 [b1] Forget the power rule. <bookmark mark="cross"/>Forget every integral you ever memorized.
 
-> visual: a single formula remains in the center: integral of p dq = pq - integral of q dp.
+> visual: a single formula remains in the center: integral of p q' dx = pq - integral of q p' dx.
 [b2] You get to keep one big thing, <bookmark mark="ibp"/>integration by parts, plus
 two small facts we'll get to.
 
@@ -34,7 +34,7 @@ the outputs. Scale the input, and the output scales the same way.
 [b4] Rule two. <bookmark mark="r2"/>I of one is x. That's the only answer we get for
 free.
 
-> visual: the usual formula: integral of p q' = pq - integral of q p'. The two primes
+> visual: the usual formula: integral of p q' dx = pq - integral of q p' dx. The two primes
 > are highlighted.
 [b5] Rule three is integration by parts. You've probably seen it like this.
 <bookmark mark="ibp"/>The integral of p times the derivative of q equals p times q,
@@ -225,7 +225,7 @@ force a machine to be the derivative, at least on polynomials?
 [b2] Say you know derivatives and integration by parts, but you've forgotten every
 integral formula. What's the integral of x, from zero to a?
 
-> visual: integral of p dq = pq - integral of q dp, all from 0 to a. Then p = x, q = x
+> visual: integral of p q' dx = pq - integral of q p' dx, all from 0 to a. Then p = x, q = x
 > substituted: integral of x dx = a^2 - integral of x dx (from 0 to a).
 [b3] Use integration by parts, with both pieces equal to x. It says <bookmark mark="eq"/>the
 integral of x equals a squared, minus the integral of x.
