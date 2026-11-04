@@ -159,7 +159,7 @@ class Short2Rectangle(VoiceoverScene):
         with self.voiceover(text=N("short2.b4")) as tr:
             self.play(FadeOut(VGroup(p1, p2)), run_time=0.5)
             self.play(FadeIn(sh, shift=UP * 0.2), run_time=1.0)
-            res = math(r"\text{under} = \frac{a^3}{3}", size=44).move_to(area)
+            res = math(r"\text{under} = \tfrac{1}{3}\,a^3", size=44).move_to(area)
             self.play(Transform(area, res), run_time=rt(min(1.0, tr.get_remaining_duration())))
             rest(self, tr)
 
