@@ -78,7 +78,7 @@ class Short1SelfSolving(VoiceoverScene):
 
         col = VGroup(*[math(INT + r" x^{%d}\,dx = \frac{a^{%d}}{%d}" % (n, n + 1, n + 1) if n > 1 else
                             INT + r" x\,dx = \frac{a^2}{2}", size=42) for n in (1, 2, 3, 4)]
-                     ).arrange(DOWN, buff=0.35).move_to(UP * 1.4)
+                     ).arrange(DOWN, buff=0.35).move_to(UP * 2.2)
         dots = math(r"\vdots", size=42).next_to(col, DOWN, buff=0.2)
         general = math(INT + r" x^n\,dx = \frac{a^{n+1}}{n+1}", size=54).next_to(dots, DOWN, buff=0.4)
         frame = SurroundingRectangle(general, color=GOOD, buff=0.2)
@@ -101,7 +101,7 @@ class Short2Rectangle(VoiceoverScene):
         self.set_speech_service(get_speech_service())
 
         ibp = math(r"\int p\,q'\,dx = pq - \int q\,p'\,dx", size=40).move_to(UP * (SAFE_TOP - 0.5))
-        ax = plane(4.4).move_to(RIGHT * 0.5 + UP * 2.3)
+        ax = plane(4.0).move_to(RIGHT * 0.5 + UP * 2.65)
         o = ax.c2p(0, 0)
         rect = DashedVMobject(Polygon(o, ax.c2p(1, 0), ax.c2p(1, 1), ax.c2p(0, 1), color=FG, stroke_width=2),
                               num_dashes=40)
@@ -110,7 +110,7 @@ class Short2Rectangle(VoiceoverScene):
         bw_lab = math("a", size=36).next_to(bw, DOWN, buff=0.1)
         bh = Brace(Line(o, ax.c2p(0, 1)), LEFT, color=MUTED)
         bh_lab = math("a^2", size=36).next_to(bh, LEFT, buff=0.1)
-        area = math(r"\text{rectangle} = a^3", size=40).move_to(DOWN * 1.0)
+        area = math(r"\text{rectangle} = a^3", size=40).move_to(DOWN * 0.55)
 
         with self.voiceover(text=N("short2.b1")) as tr:
             self.play(FadeIn(ibp), run_time=0.8)
@@ -150,10 +150,10 @@ class Short2Rectangle(VoiceoverScene):
             rest(self, tr)
 
         def shares(k):
-            b = bars(k + 1, height=1.4, total=3.0)
+            b = bars(k + 1, height=1.3, total=3.0)
             lab = math(r"\text{under} = \tfrac{1}{%d}" % (k + 1), r"\text{ of the rectangle}", size=36)
             lab[0].set_color(PRIMARY)
-            return VGroup(b, lab).arrange(DOWN, buff=0.25).move_to(DOWN * 2.85)
+            return VGroup(b, lab).arrange(DOWN, buff=0.25).move_to(DOWN * 2.05)
 
         sh = shares(2)
         with self.voiceover(text=N("short2.b4")) as tr:

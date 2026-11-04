@@ -723,3 +723,18 @@ class S07Ending(VoiceoverScene):
             if hold > 0.05:
                 self.wait(hold)
             self.play(FadeOut(Group(*self.mobjects)), run_time=1.2)
+
+
+# ---------------------------------------------------------------------------
+# Thumbnail (rendered as a still by scripts/finish.py)
+# ---------------------------------------------------------------------------
+
+
+class Thumbnail(Scene):
+    def construct(self):
+        q = math(r"\int x^5\,dx =", r"\;?", size=150)
+        q[1].set_color(PRIMARY)
+        q.move_to(UP * 0.8)
+        tag = text("no power rule allowed", size=80, weight="BOLD", color=SECONDARY)
+        tag.next_to(q, DOWN, buff=0.8)
+        self.add(q, tag)

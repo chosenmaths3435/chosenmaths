@@ -27,8 +27,18 @@ else:
 
 FW, FH = config.frame_width, config.frame_height
 
-# Safe area: platforms overlay UI on vertical video (captions, buttons, channel name).
+# Safe area: platforms overlay UI on vertical video (buttons, channel name, description).
 # Keep important content inside these bounds in portrait.
+#
+# Portrait, top to bottom (frame is 14.2 units tall):
+#   top 1.6 units      platform UI (search, tabs)
+#   content            between SAFE_TOP and SAFE_BOTTOM
+#   caption band       burned-in captions, centered at CAPTION_FROM_BOTTOM
+#   bottom ~2.8 units  platform UI (description, music, buttons)
 SAFE_TOP = FH / 2 - (1.6 if PORTRAIT else 0.4)
-SAFE_BOTTOM = -FH / 2 + (3.2 if PORTRAIT else 0.4)
+SAFE_BOTTOM = -FH / 2 + (4.0 if PORTRAIT else 0.4)
 SAFE_X = FW / 2 - (0.6 if PORTRAIT else 0.5)
+
+# Fraction of the frame height from the bottom edge to the caption center (portrait).
+# scripts/finish.py reads this to place burned-in captions.
+CAPTION_FROM_BOTTOM = 0.24
