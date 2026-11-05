@@ -127,11 +127,15 @@ def main():
     u = sub.add_parser("upload")
     u.add_argument("payload")
     u.add_argument("--dry-run", action="store_true")
+    sub.add_parser("whoami", help="log in (first time opens a browser) and print the channel")
     pb = sub.add_parser("publish")
     pb.add_argument("video_id")
     pb.add_argument("--at", help="ISO 8601 UTC time to go public, e.g. 2026-11-10T15:00:00Z")
     a = ap.parse_args()
-    if a.cmd == "upload":
+    if a.cmd == "whoami":
+        ch = client().channels().list(part="snippet", mine=True).execute()["items"][0]["snippet"]
+        print(f"logged in to YouTube channel: {ch['title']}")
+    elif a.cmd == "upload":
         upload(a.payload, a.dry_run)
     else:
         publish(a.video_id, a.at)
