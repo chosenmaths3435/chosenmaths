@@ -3,14 +3,15 @@
     uv run scripts/post_bluesky.py out/<slug>/publish/short1.json [--dry-run]
 
 Publishes immediately: run only after the user approves this item for Bluesky.
-Config: ~/.config/math-videos/bluesky.json with handle and app_password (Settings ->
-Privacy and security -> App passwords; never the account password). Video posts need a
+Credentials: BSKY_HANDLE and BSKY_PASSWORD in videos/.env (or ~/.config/math-videos/
+bluesky.json with handle and app_password). Use an app password (Settings -> Privacy
+and security -> App passwords), never the account password. Video posts need a
 verified email on the account.
 """
 
 import argparse
 
-from mathvid.publish import conf, load_payload, record, video_size
+from mathvid.publish import env_or_conf, load_payload, record, video_size
 
 MAX_GRAPHEMES = 300
 
@@ -46,7 +47,7 @@ def main():
 
     from atproto import Client, models
 
-    c = conf("bluesky", required=["handle", "app_password"])
+    c = env_or_conf("bluesky", {"handle": "BSKY_HANDLE", "app_password": "BSKY_PASSWORD"})
     client = Client()
     client.login(c["handle"], c["app_password"])
     with open(p["video"], "rb") as f:

@@ -60,3 +60,19 @@ def video_size(path):
                          capture_output=True, text=True, check=True).stdout.strip()
     w, h = out.split(",")
     return int(w), int(h)
+
+
+def env_or_conf(name, mapping):
+    """Credentials from ~/.config/math-videos/<name>.json, else from videos/.env.
+
+    mapping: {config_key: ENV_VAR}. Exits with a clear message if any are missing.
+    """
+    from dotenv import dotenv_values
+
+    data = json.loads((CONF / f"{name}.json").read_text()) if (CONF / f"{name}.json").exists() else {}
+    env = dotenv_values(ROOT / ".env")
+    out = {k: data.get(k) or env.get(var) for k, var in mapping.items()}
+    missing = [mapping[k] for k, v in out.items() if not v]
+    if missing:
+        sys.exit(f"Missing {', '.join(missing)} in videos/.env (or {CONF / (name + '.json')}).")
+    return out
