@@ -55,8 +55,10 @@ def import_env(c):
     for k, field in ENV_KEYS.items():
         if env.get(k) and field in ("app_id", "app_secret", "threads_app_secret"):
             c[field] = env[k]
-        elif env.get(k) and field == "user_token" and not c.get("page_token"):
-            c[field] = env[k]
+        elif env.get(k) and field == "user_token" and not c.get("page_token") \
+                and env[k] != c.get("env_user_token"):
+            # Only a token newly pasted into .env replaces the saved long-lived one.
+            c[field] = c["env_user_token"] = env[k]
         elif env.get(k) and field == "threads_token" and not c.get("threads_long_token"):
             c[field] = env[k]
     return c
@@ -91,6 +93,9 @@ def setup():
     if c.get("user_token"):
         long = get(f"{g}/oauth/access_token", grant_type="fb_exchange_token", client_id=c["app_id"],
                    client_secret=c["app_secret"], fb_exchange_token=c["user_token"])["access_token"]
+        # Keep the 60-day token, so a later step failing does not force a new login.
+        c["user_token"] = long
+        save_conf("meta", c)
         pages = get(f"{g}/me/accounts", access_token=long)["data"]
         if not pages:
             save_conf("meta", c)
