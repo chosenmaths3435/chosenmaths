@@ -116,7 +116,7 @@ def setup():
         if "instagram_business_account" not in ig:
             raise SystemExit("The Page has no linked Instagram professional account. Link it, then rerun.")
         c["ig_user_id"] = ig["instagram_business_account"]["id"]
-        del c["user_token"]
+        # Keep the long-lived user token: Instagram's direct (resumable) upload needs it.
         print(f"Facebook Page {page['name']} and Instagram account {c['ig_user_id']} ready")
     save_conf("meta", c)
 
@@ -140,7 +140,11 @@ def rupload(url, token, path):
 def wait_until(check, what, timeout=600):
     start = time.time()
     while time.time() - start < timeout:
-        status = check()
+        try:
+            status = check()
+        except (requests.Timeout, requests.ConnectionError):
+            time.sleep(5)  # a network blip while polling is not a failed upload
+            continue
         if status in ("FINISHED", "PUBLISHED", "ready"):
             return
         if status in ("ERROR", "EXPIRED", "error"):
@@ -149,15 +153,23 @@ def wait_until(check, what, timeout=600):
     raise SystemExit(f"{what} still processing after {timeout}s")
 
 
-def instagram(p, slug, item, c, ai):
+def instagram(p, slug, item, c, ai, video_url=None):
     g = GRAPH.format(v=c.get("graph_version", "v24.0"))
     tok = c["page_token"]
-    params = {"media_type": "REELS", "upload_type": "resumable", "caption": p["caption"],
-              "share_to_feed": "true", "access_token": tok}
+    params = {"media_type": "REELS", "caption": p["caption"], "share_to_feed": "true", "access_token": tok}
+    if video_url:
+        # Instagram fetches the file itself. Works with the Page token.
+        params["video_url"] = video_url
+    else:
+        # Direct upload: Meta's docs require a user token (Facebook Login for Business).
+        params["upload_type"] = "resumable"
+        tok = c.get("user_token") or tok
+        params["access_token"] = tok
     if ai:
         params["is_ai_generated"] = "true"
     cont = post(f"{g}/{c['ig_user_id']}/media", data=params)
-    rupload(f"{RUPLOAD}/ig-api-upload/{c.get('graph_version', 'v24.0')}/{cont['id']}", tok, p["video"])
+    if not video_url:
+        rupload(f"{RUPLOAD}/ig-api-upload/{c.get('graph_version', 'v24.0')}/{cont['id']}", tok, p["video"])
     wait_until(lambda: get(f"{g}/{cont['id']}", fields="status_code", access_token=tok)["status_code"],
                "Instagram")
     media = post(f"{g}/{c['ig_user_id']}/media_publish", data={"creation_id": cont["id"], "access_token": tok})
@@ -207,6 +219,8 @@ def main():
                        help="omit the AI-generated flag (only if the API rejects it)")
         if name == "threads":
             s.add_argument("--video-url", required=True, help="public URL of the video file")
+        if name == "instagram":
+            s.add_argument("--video-url", help="public URL for Instagram to fetch instead of uploading")
     a = ap.parse_args()
     if a.cmd == "setup":
         return setup()
@@ -221,7 +235,7 @@ def main():
     c = conf("meta", required=["page_token", "page_id", "ig_user_id"] if a.cmd != "threads"
              else ["threads_long_token", "app_secret"])
     if a.cmd == "instagram":
-        instagram(p, slug, item, c, ai)
+        instagram(p, slug, item, c, ai, a.video_url)
     elif a.cmd == "facebook":
         facebook(p, slug, item, c, ai)
     else:
