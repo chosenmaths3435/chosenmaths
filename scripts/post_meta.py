@@ -17,6 +17,7 @@ Instagram IDs.
 
 import argparse
 import time
+from pathlib import Path
 
 import requests
 
@@ -41,16 +42,66 @@ def post(url, data=None, **kw):
     return r.json()
 
 
+ENV_KEYS = {"META_APP_ID": "app_id", "META_APP_SECRET": "app_secret",
+            "META_GRAPH_API_USER_TOKEN": "user_token", "META_THREADS_USER_TOKEN": "threads_token",
+            "META_THREADS_APP_SECRET": "threads_app_secret"}
+
+
+def import_env(c):
+    """Take META_* values from videos/.env, so tokens can be updated there and rerun."""
+    from dotenv import dotenv_values
+
+    env = dotenv_values(Path(__file__).resolve().parent.parent / ".env")
+    for k, field in ENV_KEYS.items():
+        if env.get(k) and field in ("app_id", "app_secret", "threads_app_secret"):
+            c[field] = env[k]
+        elif env.get(k) and field == "user_token" and not c.get("page_token"):
+            c[field] = env[k]
+        elif env.get(k) and field == "threads_token" and not c.get("threads_long_token"):
+            c[field] = env[k]
+    return c
+
+
 def setup():
-    c = conf("meta", required=["app_id", "app_secret"])
+    from mathvid.publish import CONF
+
+    c = conf("meta") if (CONF / "meta.json").exists() else {}
+    c = import_env(c)
+    if not c.get("app_id") or not c.get("app_secret"):
+        raise SystemExit("Need META_APP_ID and META_APP_SECRET in videos/.env (or meta.json).")
     v = c.setdefault("graph_version", "v24.0")
     g = GRAPH.format(v=v)
+    # Threads first and saved on its own, so a Facebook problem below cannot waste the
+    # short-lived Threads token.
+    if c.get("threads_token") and not c.get("threads_long_token"):
+        tok = c["threads_token"]
+        info = get(f"{THREADS}/debug_token", input_token=tok, access_token=tok)["data"]
+        if info.get("expires_at", 0) - time.time() < 7 * 86400:
+            # Short-lived (about an hour): exchange it. This needs the Threads app secret,
+            # which the dashboard shows separately from the Facebook app secret.
+            secret = c.get("threads_app_secret", c["app_secret"])
+            tok = get("https://graph.threads.net/access_token", grant_type="th_exchange_token",
+                      client_secret=secret, access_token=tok)["access_token"]
+        # The dashboard's token generator already issues 60-day tokens; those are kept as is.
+        # threads_token_at approximates the issue time so refreshes start within 30 days.
+        c["threads_long_token"], c["threads_token_at"] = tok, int(time.time())
+        del c["threads_token"]
+        print("Threads token ready (refreshed automatically when used)")
+        save_conf("meta", c)
     if c.get("user_token"):
         long = get(f"{g}/oauth/access_token", grant_type="fb_exchange_token", client_id=c["app_id"],
                    client_secret=c["app_secret"], fb_exchange_token=c["user_token"])["access_token"]
         pages = get(f"{g}/me/accounts", access_token=long)["data"]
         if not pages:
-            raise SystemExit("No Facebook Pages found for this token. Check pages_show_list permission.")
+            save_conf("meta", c)
+            raise SystemExit(
+                "Facebook returned no Pages for this token, although it has the Page permissions.\n"
+                "Usually the app was authorized without selecting the Page. In Graph API Explorer,\n"
+                "generate the token again and, in the login dialog, choose 'Edit previous settings'\n"
+                "(or 'Reconnect') and select the Page and the Instagram account. If the dialog\n"
+                "skips that step, remove the app under Facebook Settings -> Business integrations\n"
+                "first. Also check Page settings -> Page access lists your profile with full control.\n"
+                "Then put the new token in videos/.env as META_GRAPH_API_USER_TOKEN and rerun setup.")
         if len(pages) > 1 and not c.get("page_id"):
             names = ", ".join(f"{p['name']} ({p['id']})" for p in pages)
             raise SystemExit(f"Several Pages: {names}. Put the right one in meta.json as page_id and rerun.")
@@ -62,12 +113,6 @@ def setup():
         c["ig_user_id"] = ig["instagram_business_account"]["id"]
         del c["user_token"]
         print(f"Facebook Page {page['name']} and Instagram account {c['ig_user_id']} ready")
-    if c.get("threads_token") and not c.get("threads_long_token"):
-        r = get("https://graph.threads.net/access_token", grant_type="th_exchange_token",
-                client_secret=c["app_secret"], access_token=c["threads_token"])
-        c["threads_long_token"], c["threads_token_at"] = r["access_token"], int(time.time())
-        del c["threads_token"]
-        print("Threads token ready (refreshed automatically when used)")
     save_conf("meta", c)
 
 
