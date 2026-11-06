@@ -1,0 +1,30 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {repo_url} and {chapters} are filled in at publish time.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "So... what actually is √2?"
+  title_alternatives:
+    - "The Square Root of 2 Is a Set of Lists"
+    - "Where Do the Real Numbers Come From?"
+  description: |
+    No fraction squares to 2. The Pythagoreans knew it, and here's a picture proof you can see. So what is the square root of 2? Lists of fractions like 1, 1.4, 1.41, 1.414, ... close in on a spot where no fraction lives. Let the list be the number, group together the lists that close in on the same spot, and you've built the real numbers. Change how you measure closeness and the same idea builds entirely different number systems, like one where 1 + 2 + 4 + 8 + ... = -1.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+    Narration: an AI clone of my own voice reading a script I wrote.
+
+    #CauchySequences #RealNumbers #EquivalenceClasses #Completion #pAdicNumbers #RealAnalysis #Irrational
+  tags: [square root of 2, real numbers, Cauchy sequences, construction of the reals, irrational numbers, p-adic numbers, real analysis, math, manim]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "√2 is an infinite set of lists"
+    caption: "No fraction squares to 2, but 1, 1.4, 1.41, 1.414, ... close in on the spot where it should be. So make the list the number. That's also why 0.999... = 1. #math #RealNumbers #CauchySequences"
+  short2:
+    title: "1 + 2 + 4 + 8 + ... = -1?"
+    caption: "Not for the numbers you know. But change how you measure the distance between fractions, and you get a number system where it's true. #math #pAdicNumbers #NumberTheory"
