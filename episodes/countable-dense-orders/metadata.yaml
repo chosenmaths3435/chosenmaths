@@ -1,0 +1,30 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {repo_url} and {chapters} are filled in at publish time.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "What makes the rational numbers so special?"
+  title_alternatives:
+    - "Every Line Like This Is the Rationals in Disguise"
+    - "Why There's Only One Set of Rational Numbers"
+  description: |
+    The rationals sit on a line with no ends, there's always another one between any two, and you can still list them all. Those three facts pin down their order completely. Throw away most of the rationals, or add the square root of 2, and as long as the three facts survive, you still have the same line. Here's the proof, using threads between two lines.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+    Narration: an AI clone of my own voice reading a script I wrote.
+
+    #RationalNumbers #Countable #DenseOrder #LinearOrder #OrderIsomorphism #CantorsIsomorphismTheorem #BackAndForth #SetTheory
+  tags: [rational numbers, countable sets, dense linear order, order isomorphism, back and forth, Cantor, set theory, math, manim]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "Throw away most fractions. Nothing changes."
+    caption: "Keep only the fractions between 0 and 1 and between 2 and 3. Match them to all the fractions with threads that never cross, and it's the same line. #math #RationalNumbers #OrderIsomorphism #BackAndForth"
+  short2:
+    title: "There are exactly as many fractions as integers"
+    caption: "Between any two integers sit infinitely many fractions, yet the two sets are the same size. One table proves it. #math #Countable #SetTheory #RationalNumbers"

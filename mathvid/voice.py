@@ -66,7 +66,8 @@ class DraftService(SpeechService):
         input_data = {"input_text": input_text, "service": "draft", "wpm": self.wpm}
         cached = self.get_cached_result(input_data, cache_dir)
         if cached is not None:
-            return cached
+            # The cache key ignores bookmarks, so take them from the current text.
+            return {**cached, "input_text": text}
 
         spans = list(_word_spans(input_text))
         sec_per_word = 60.0 / self.wpm
@@ -121,7 +122,8 @@ class ElevenLabsTimestampService(SpeechService):
         }
         cached = self.get_cached_result(input_data, cache_dir)
         if cached is not None:
-            return cached
+            # The cache key ignores bookmarks, so take them from the current text.
+            return {**cached, "input_text": text}
 
         resp = requests.post(
             ELEVEN_URL.format(voice_id=self.voice_id),
