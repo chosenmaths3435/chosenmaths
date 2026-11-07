@@ -1,0 +1,30 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {repo_url} and {chapters} are filled in at publish time.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Are the real numbers uncountable? Skolem's paradox"
+  title_alternatives:
+    - "A countable universe where the reals are uncountable"
+    - "Skolem's paradox: uncountable from inside, countable from outside"
+  description: |
+    Set theory proves that the real numbers can't be listed. Logic proves that, if set theory is consistent, there's a whole universe of sets where that theorem is still true, and yet everything in the universe can be listed. This is Skolem's paradox. We build the countable universe with the Lowenheim-Skolem theorem, see why it isn't a contradiction, and ask what a universe can't see about itself, ending with Godel's incompleteness theorem.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+    Narration: an AI clone of my own voice reading a script I wrote.
+
+    #SkolemsParadox #LowenheimSkolem #SetTheory #ModelTheory #Countable #Uncountable #CantorsDiagonal #MathematicalLogic #Godel
+  tags: [Skolem's paradox, Lowenheim-Skolem theorem, set theory, ZFC, model theory, countable, uncountable, Cantor diagonal argument, mathematical logic, Godel incompleteness, math, manim]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "The real numbers are uncountable... from inside"
+    caption: "If set theory is consistent, there's a universe where every theorem holds, Cantor's included, yet everything in it can be listed. The list exists, but not inside the universe. #math #SkolemsParadox #SetTheory #Uncountable"
+  short2:
+    title: "A countable copy of the real numbers"
+    caption: "Throw away almost every real number, and no statement about plus, times and order notices. That's the Lowenheim-Skolem theorem. #math #LowenheimSkolem #ModelTheory #RealNumbers"

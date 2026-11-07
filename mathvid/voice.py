@@ -56,7 +56,8 @@ def _boundaries_from_char_times(text: str, starts: list[float]) -> list[dict]:
 class DraftService(SpeechService):
     """Silent placeholder narration timed at a fixed speaking rate."""
 
-    def __init__(self, words_per_minute: float = 160, **kwargs):
+    # The cloned voice measured 183 wpm over the first three episodes.
+    def __init__(self, words_per_minute: float = 183, **kwargs):
         initialize_speech_service(self, kwargs)
         self.wpm = words_per_minute
 
