@@ -41,5 +41,5 @@ shorts:
     caption: "Godel's incompleteness theorem is hiding inside the halting problem. A proof checker is a machine, and that's all it takes."
     hashtags: "#math #Godel #HaltingProblem #Logic"
     cover:
-      at: 44.9
+      at: 40.0
       text: "G\u00f6del, out of Turing"
