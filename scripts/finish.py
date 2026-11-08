@@ -9,6 +9,9 @@ Writes to out/<slug>/:
     chapters.txt        YouTube chapter list from the script's scene names
     <short>.mp4         each short, vertical, with burned-in captions
     <short>.srt         the same captions as a file
+    <short>-cover.jpg   each short's cover: a frame of the short with a caption, set by
+                        `cover:` in metadata.yaml; <short>-cover-crops.png previews how
+                        the profile grid (3:4) and feed (1:1) crop it
 
 Rendering reuses manim's cache, so rerunning after a small change only re-renders the
 scenes that changed. Narration audio is cached by text, so the voice is only generated
@@ -108,8 +111,8 @@ def chunk_entries(entries, max_words=3):
     return out
 
 
-def write_ass(entries, path, width=1080, height=1920, from_bottom=0.24):
-    size = round(height * 0.05)
+def write_ass(entries, path, width=1080, height=1920, from_bottom=0.24, scale=1.0):
+    size = round(height * 0.05 * scale)
     margin_v = round(height * from_bottom - size / 2)
     head = f"""[Script Info]
 ScriptType: v4.00+
@@ -172,7 +175,36 @@ def build_long(slug, ep_dir, media, out, q, voice, only_scenes):
     print(f"long-form: {final} ({t / 60:.1f} min)")
 
 
-def build_shorts(slug, ep_dir, media, out, q, voice, only_scenes):
+# Covers sit in the caption band, nudged up so the bottom line stays inside the
+# middle 1:1 square that Instagram shows when a reel is shared to the feed.
+COVER_FROM_BOTTOM = 0.26
+
+
+def build_cover(v, name, cover, out, w, h):
+    """A frame of the clean short (no burned-in captions) plus a caption in the same style."""
+    at = float(cover["at"])
+    if at > duration(v):
+        raise SystemExit(f"{name}: cover time {at}s is past the end of the short")
+    # Lines break where the text has newlines; extra lines stack upward.
+    text = r"\N".join(t.strip() for t in str(cover.get("text", "")).strip().splitlines())
+    ass = out / f"{name}-cover.ass"
+    write_ass([(0, 10, text)] if text else [], ass, w, h,
+              float(cover.get("from_bottom", COVER_FROM_BOTTOM)), float(cover.get("scale", 1.0)))
+    jpg = out / f"{name}-cover.jpg"
+    run(["ffmpeg", "-v", "error", "-y", "-ss", str(at), "-i", v, "-frames:v", "1", "-vf", f"ass={ass}",
+         "-q:v", "2", jpg])
+    ass.unlink()
+    # Preview of the crops the profile grid (3:4) and a feed share (1:1) show.
+    crops = out / f"{name}-cover-crops.png"
+    g = round(w * 4 / 3)
+    run(["ffmpeg", "-v", "error", "-y", "-i", jpg, "-filter_complex",
+         f"[0]split=3[a][b][c];[b]crop={w}:{g}:0:{(h - g) // 2},pad={w}:{h}:0:{(h - g) // 2}:gray[b2];"
+         f"[c]crop={w}:{w}:0:{(h - w) // 2},pad={w}:{h}:0:{(h - w) // 2}:gray[c2];"
+         f"[a][b2][c2]hstack=3,scale=-2:960", crops])
+    print(f"cover: {jpg} (frame at {at}s)")
+
+
+def build_shorts(slug, ep_dir, media, out, q, voice, only_scenes, covers_only=False):
     qflag, _, res = QUALITY[q]
     py = ep_dir / "shorts.py"
     if not py.exists():
@@ -180,17 +212,30 @@ def build_shorts(slug, ep_dir, media, out, q, voice, only_scenes):
     sys.path.insert(0, str(ROOT))
     os.environ["MV_ASPECT"] = "portrait"
     from mathvid.layout import CAPTION_FROM_BOTTOM
+    import yaml
+
+    meta_path = ep_dir / "metadata.yaml"
+    meta = yaml.safe_load(meta_path.read_text()) if meta_path.exists() else {}
+    w, h = (1080, 1920) if q == "h" else (480, 854)
 
     for cls in scene_classes(py, "Short"):
         if only_scenes and cls not in only_scenes:
             continue
-        render(ep_dir, py, cls, media, qflag, voice, "portrait")
         v = media / "videos" / "shorts" / res / f"{cls}.mp4"
         name = re.match(r"Short(\d+)", cls).group(0).lower()
+        cover = ((meta.get("shorts") or {}).get(name) or {}).get("cover")
+        if covers_only:
+            if not v.exists():
+                raise SystemExit(f"{v} not rendered yet; run without --only covers first")
+            if cover:
+                build_cover(v, name, cover, out, w, h)
+            else:
+                print(f"{name}: no cover in metadata.yaml")
+            continue
+        render(ep_dir, py, cls, media, qflag, voice, "portrait")
         entries = parse_srt(v.with_suffix(".srt"))
         write_srt(entries, out / f"{name}.srt")
         ass = out / f"{name}.ass"
-        w, h = (1080, 1920) if q == "h" else (480, 854)
         write_ass(chunk_entries(entries), ass, w, h, CAPTION_FROM_BOTTOM)
         final = out / f"{name}.mp4"
         run(["ffmpeg", "-v", "error", "-y", "-i", v, "-vf", f"ass={ass}", "-c:v", "libx264", "-crf", "18",
@@ -198,6 +243,8 @@ def build_shorts(slug, ep_dir, media, out, q, voice, only_scenes):
              "-b:a", "192k", "-movflags", "+faststart", final])
         ass.unlink()
         print(f"short: {final} ({duration(final):.0f}s)")
+        if cover:
+            build_cover(v, name, cover, out, w, h)
 
 
 def main():
@@ -205,7 +252,8 @@ def main():
     ap.add_argument("slug")
     ap.add_argument("--voice", default="eleven", choices=["eleven", "draft"])
     ap.add_argument("--quality", default="h", choices=["h", "l"])
-    ap.add_argument("--only", choices=["long", "shorts"])
+    ap.add_argument("--only", choices=["long", "shorts", "covers"],
+                    help="covers: rebuild short covers from the existing renders only")
     ap.add_argument("--scenes", default="", help="comma-separated classes to re-render; others reuse cache")
     a = ap.parse_args()
 
@@ -216,10 +264,10 @@ def main():
     out = ROOT / "out" / f"{a.slug}{suffix}"
     out.mkdir(parents=True, exist_ok=True)
     only = set(filter(None, a.scenes.split(",")))
-    if a.only != "shorts":
+    if a.only in (None, "long"):
         build_long(a.slug, ep_dir, media, out, a.quality, a.voice, only)
-    if a.only != "long":
-        build_shorts(a.slug, ep_dir, media, out, a.quality, a.voice, only)
+    if a.only in (None, "shorts", "covers"):
+        build_shorts(a.slug, ep_dir, media, out, a.quality, a.voice, only, a.only == "covers")
 
 
 if __name__ == "__main__":

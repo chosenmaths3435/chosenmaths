@@ -1,13 +1,18 @@
 """Post shorts to Instagram Reels, Facebook Reels, and Threads (Meta APIs).
 
     uv run scripts/post_meta.py setup                 # once, and when tokens expire
-    uv run scripts/post_meta.py instagram out/<slug>/publish/short1.json [--dry-run]
+    uv run scripts/post_meta.py instagram out/<slug>/publish/short1.json [--cover-url URL] [--dry-run]
     uv run scripts/post_meta.py facebook  out/<slug>/publish/short1.json [--dry-run]
     uv run scripts/post_meta.py threads   out/<slug>/publish/short1.json --video-url URL [--dry-run]
 
 Every posting command publishes immediately, so run it only after the user has approved
 that item for that platform. Threads cannot take a file upload; it fetches the video from
 a public URL (the skill uses a GitHub release asset).
+
+Covers: Instagram can only take a cover when the reel is created. With --cover-url it uses
+that JPEG (the payload's cover, attached to the same release); without it, the frame at
+the payload's cover_at. Facebook gets the cover file as the reel's preferred thumbnail.
+Threads has no cover option and shows the first frame.
 
 Config: ~/.config/math-videos/meta.json. You fill in app_id, app_secret, user_token
 (short-lived, from Graph API Explorer) and threads_token (from the Threads use case's
@@ -153,10 +158,14 @@ def wait_until(check, what, timeout=600):
     raise SystemExit(f"{what} still processing after {timeout}s")
 
 
-def instagram(p, slug, item, c, ai, video_url=None):
+def instagram(p, slug, item, c, ai, video_url=None, cover_url=None):
     g = GRAPH.format(v=c.get("graph_version", "v24.0"))
     tok = c["page_token"]
     params = {"media_type": "REELS", "caption": p["caption"], "share_to_feed": "true", "access_token": tok}
+    if cover_url:
+        params["cover_url"] = cover_url
+    elif "cover_at" in p:
+        params["thumb_offset"] = str(round(p["cover_at"] * 1000))
     if video_url:
         # Instagram fetches the file itself. Works with the Page token.
         params["video_url"] = video_url
@@ -192,6 +201,25 @@ def facebook(p, slug, item, c, ai):
     url = f"https://www.facebook.com/reel/{start['video_id']}"
     record(slug, "facebook", item, "public", id=start["video_id"], url=url)
     print(f"Facebook Reel posted: {url}")
+    if p.get("cover"):
+        facebook_cover(g, tok, start["video_id"], p["cover"])
+
+
+def facebook_cover(g, tok, video_id, path):
+    """Set the reel's cover. The reel is already public, so a failure only warns."""
+    err = ""
+    for _ in range(12):  # the video may still be processing right after publishing
+        with open(path, "rb") as f:
+            r = requests.post(f"{g}/{video_id}/thumbnails", data={"is_preferred": "true", "access_token": tok},
+                              files={"source": ("cover.jpg", f, "image/jpeg")}, timeout=120)
+        if r.ok:
+            print("Facebook cover set")
+            return
+        err = r.text[:300]
+        time.sleep(10)
+    # Meta lists pages_manage_engagement and pages_read_user_content for this edge; a page
+    # token from `setup` without them gets a permissions error here.
+    print(f"WARNING: could not set the Facebook cover ({err}). Set it in the app: edit the reel -> cover.")
 
 
 def threads(p, slug, item, c, ai, video_url):
@@ -221,6 +249,7 @@ def main():
             s.add_argument("--video-url", required=True, help="public URL of the video file")
         if name == "instagram":
             s.add_argument("--video-url", help="public URL for Instagram to fetch instead of uploading")
+            s.add_argument("--cover-url", help="public URL of the cover JPEG (else the frame at cover_at)")
     a = ap.parse_args()
     if a.cmd == "setup":
         return setup()
@@ -230,12 +259,17 @@ def main():
         raise SystemExit("Meta posting is for shorts; the long-form video goes to YouTube.")
     ai = p.get("ai_disclosure", True) and not a.no_ai_label
     if a.dry_run:
-        print(f"{a.cmd}: {item} ({p['video']})\ncaption: {p['caption']}\nai label: {ai}")
+        cover = getattr(a, "cover_url", None) or (f"frame at {p['cover_at']}s" if "cover_at" in p else "first frame")
+        if a.cmd == "facebook":
+            cover = p.get("cover", "first frame")
+        elif a.cmd == "threads":
+            cover = "first frame (no API option)"
+        print(f"{a.cmd}: {item} ({p['video']})\ncaption: {p['caption']}\nai label: {ai}\ncover: {cover}")
         return
     c = conf("meta", required=["page_token", "page_id", "ig_user_id"] if a.cmd != "threads"
              else ["threads_long_token", "app_secret"])
     if a.cmd == "instagram":
-        instagram(p, slug, item, c, ai, a.video_url)
+        instagram(p, slug, item, c, ai, a.video_url, a.cover_url)
     elif a.cmd == "facebook":
         facebook(p, slug, item, c, ai)
     else:
