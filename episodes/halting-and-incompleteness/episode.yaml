@@ -1,6 +1,6 @@
 slug: halting-and-incompleteness
 title: Godel and Turing proved the same theorem
-status: publish       # script -> animate -> finish -> publish -> published
+status: published      # script -> animate -> finish -> publish -> published
 length_target_min: 12
 coauthors: []
 shorts: [short1, short2, short3]
