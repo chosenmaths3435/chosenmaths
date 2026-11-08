@@ -108,6 +108,12 @@ def main():
             "video": need(video),
             "captions": need(out / f"{name}.srt"),
         }
+        cover = s.get("cover")
+        if not cover or "at" not in cover:
+            problems.append(f"{name}: no cover (set cover: at/text in metadata.yaml, then finish.py --only covers)")
+        else:
+            payloads[name]["cover"] = need(out / f"{name}-cover.jpg")
+            payloads[name]["cover_at"] = float(cover["at"])
 
     for name, p in payloads.items():
         (pub / f"{name}.json").write_text(json.dumps(p, indent=2, ensure_ascii=False) + "\n")
