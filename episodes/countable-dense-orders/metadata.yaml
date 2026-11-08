@@ -1,6 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {chapters} is filled in at publish time. Short captions are the hook, then a link to
-# the long-form video (added at publish time), then the hashtags.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -12,6 +12,8 @@ long:
     The rationals sit on a line with no ends, there's always another one between any two, and you can still list them all. Those three facts pin down their order completely. Throw away most of the rationals, or add the square root of 2, and as long as the three facts survive, you still have the same line. Here's the proof, using threads between two lines.
 
     {chapters}
+
+    Animation source and script: {repo_url}
 
     #RationalNumbers #Countable #DenseOrder #LinearOrder #OrderIsomorphism #CantorsIsomorphismTheorem #BackAndForth #SetTheory
   tags: [rational numbers, countable sets, dense linear order, order isomorphism, back and forth, Cantor, set theory, math]

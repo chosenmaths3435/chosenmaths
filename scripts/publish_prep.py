@@ -20,7 +20,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from mathvid.publish import long_url, short_caption  # noqa: E402
+from mathvid.publish import long_description, long_url, short_caption  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -48,7 +48,6 @@ def duration(path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("slug")
-    ap.add_argument("--repo-url", default="", help="fills {repo_url} if the description uses it")
     ap.add_argument("--out-dir", help="read finished files from here instead of out/<slug> (for testing)")
     a = ap.parse_args()
 
@@ -70,7 +69,7 @@ def main():
     chapters = (out / "chapters.txt").read_text().strip() if (out / "chapters.txt").exists() else ""
     if not chapters:
         problems.append("missing chapters.txt (run scripts/finish.py first)")
-    desc = long["description"].replace("{chapters}", chapters).replace("{repo_url}", a.repo_url).strip()
+    desc = long_description(long, chapters, a.slug)
     if "{" in desc:
         problems.append(f"unfilled placeholder in description: {re.findall(r'{\\w+}', desc)}")
     for name in episode.get("coauthors") or []:
