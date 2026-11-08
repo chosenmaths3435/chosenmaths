@@ -64,3 +64,27 @@
   id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3mzr3qiczv426
   url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3mzr3qiczv426
   at: '2026-11-07T23:52:46+00:00'
+- platform: threads
+  item: short1-link
+  state: public
+  id: '17957266656035671'
+  url: https://www.threads.com/@chosenmaths3435/post/DfdvgCRFHDK
+  at: '2026-11-08T03:01:11+00:00'
+- platform: threads
+  item: short2-link
+  state: public
+  id: '17981845722128775'
+  url: https://www.threads.com/@chosenmaths3435/post/DfdvhwQlJ0s
+  at: '2026-11-08T03:01:22+00:00'
+- platform: bluesky
+  item: short1-link
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3mzrgbt57rf2q
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3mzrgbt57rf2q
+  at: '2026-11-08T03:01:25+00:00'
+- platform: bluesky
+  item: short2-link
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3mzrgbtrbps2d
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3mzrgbtrbps2d
+  at: '2026-11-08T03:01:25+00:00'
