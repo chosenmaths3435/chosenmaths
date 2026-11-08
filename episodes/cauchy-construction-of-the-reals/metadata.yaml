@@ -1,6 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {chapters} is filled in at publish time. Short captions are the hook, then a link to
-# the long-form video (added at publish time), then the hashtags.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -12,6 +12,8 @@ long:
     No fraction squares to 2. The Pythagoreans knew it, and here's a picture proof you can see. So what is the square root of 2? Lists of fractions like 1, 1.4, 1.41, 1.414, ... close in on a spot where no fraction lives. Let the list be the number, group together the lists that close in on the same spot, and you've built the real numbers. Change how you measure closeness and the same idea builds entirely different number systems, like one where 1 + 2 + 4 + 8 + ... = -1.
 
     {chapters}
+
+    Animation source and script: {repo_url}
 
     #CauchySequences #RealNumbers #EquivalenceClasses #Completion #pAdicNumbers #RealAnalysis #Irrational
   tags: [square root of 2, real numbers, Cauchy sequences, construction of the reals, irrational numbers, p-adic numbers, real analysis, math]

@@ -2,6 +2,7 @@
 
 import datetime as dt
 import json
+import re
 import stat
 import sys
 from pathlib import Path
@@ -93,3 +94,17 @@ def short_caption(short, url):
     """A short's caption on every platform: the hook, a link to the long-form, the hashtags."""
     parts = [short["caption"].strip(), POINTER.format(url=url), short.get("hashtags", "").strip()]
     return "\n\n".join(p for p in parts if p)
+
+
+def repo_url(slug):
+    """Public URL of the episode's source folder, from the repo's GitHub remote."""
+    import subprocess
+
+    remote = subprocess.run(["git", "-C", str(ROOT), "remote", "get-url", "origin"], capture_output=True,
+                            text=True, check=True).stdout.strip()
+    base = re.sub(r"\.git$", "", re.sub(r"^git@github\.com:", "https://github.com/", remote))
+    return f"{base}/tree/main/episodes/{slug}"
+
+
+def long_description(long, chapters, slug):
+    return long["description"].replace("{chapters}", chapters).replace("{repo_url}", repo_url(slug)).strip()

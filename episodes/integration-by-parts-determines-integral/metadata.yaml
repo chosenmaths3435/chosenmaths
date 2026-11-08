@@ -1,6 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {chapters} is filled in at publish time. Short captions are the hook, then a link to
-# the long-form video (added at publish time), then the hashtags.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -14,6 +14,8 @@ long:
     Challenge: which rules force a machine to be the derivative on polynomials? Answer in the comments.
 
     {chapters}
+
+    Animation source and script: {repo_url}
 
   tags: [calculus, integration by parts, power rule, math, integrals, proof]
   category: Education

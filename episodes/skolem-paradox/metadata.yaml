@@ -1,6 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {chapters} is filled in at publish time. Short captions are the hook, then a link to
-# the long-form video (added at publish time), then the hashtags.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -12,6 +12,8 @@ long:
     Set theory proves that the real numbers can't be listed. Logic proves that, if set theory is consistent, there's a whole universe of sets where that theorem is still true, and yet everything in the universe can be listed. This is Skolem's paradox. We build the countable universe with the Lowenheim-Skolem theorem, see why it isn't a contradiction, and ask what a universe can't see about itself, ending with Godel's incompleteness theorem.
 
     {chapters}
+
+    Animation source and script: {repo_url}
 
     #SkolemsParadox #LowenheimSkolem #SetTheory #ModelTheory #Countable #Uncountable #CantorsDiagonal #MathematicalLogic #Godel
   tags: [Skolem's paradox, Lowenheim-Skolem theorem, set theory, ZFC, model theory, countable, uncountable, Cantor diagonal argument, mathematical logic, Godel incompleteness, math]

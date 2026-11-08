@@ -3,9 +3,8 @@
     uv run scripts/edit_posts.py <slug> [--only youtube|facebook|instagram] [--dry-run]
     uv run scripts/edit_posts.py <slug> --reply threads|bluesky [--dry-run]
 
-YouTube: the long-form gets the metadata's tags and its live description minus any
-production lines (narration, source links); each Short's description becomes the
-short's caption. Facebook: each reel's description becomes the caption. Instagram's API
+YouTube: the long-form gets the metadata's description and tags (keeping the chapter
+list from its live description); each Short's description becomes the short's caption. Facebook: each reel's description becomes the caption. Instagram's API
 cannot edit captions, so this prints them for pasting in the app. Threads and Bluesky
 posts cannot be edited at all; --reply posts the link to the long-form as a reply under
 each of them instead (once: replies are recorded in published.yaml as <item>-link).
@@ -24,9 +23,10 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
-from mathvid.publish import POINTER, conf, env_or_conf, long_url, record, short_caption  # noqa: E402
+from mathvid.publish import (POINTER, conf, env_or_conf, long_description, long_url, record,  # noqa: E402
+                             short_caption)
 
-PRODUCTION = re.compile(r"^(Animation source and script|Narration):.*$\n?", re.M)
+CHAPTER = re.compile(r"^\d+:\d\d(:\d\d)? .+$", re.M)
 
 
 def entries(slug, platform, links=False):
@@ -51,8 +51,10 @@ def youtube(slug, meta, url, dry):
         cur = yt.videos().list(part="snippet", id=e["id"]).execute()["items"][0]["snippet"]
         snip = {k: cur[k] for k in ("title", "categoryId", "defaultLanguage", "defaultAudioLanguage") if k in cur}
         if item == "long":
-            desc = re.sub(r"\n{3,}", "\n\n", PRODUCTION.sub("", cur["description"])).strip()
-            snip.update(description=desc, tags=meta["long"].get("tags", []))
+            chapters = "\n".join(m.group(0) for m in CHAPTER.finditer(cur["description"]))
+            if not chapters:
+                raise SystemExit(f"youtube long: no chapter list found in the live description of {e['url']}")
+            snip.update(description=long_description(meta["long"], chapters, slug), tags=meta["long"].get("tags", []))
         else:
             snip.update(description=short_caption(meta["shorts"][item], url), tags=cur.get("tags", []))
         if snip.get("description") == cur.get("description") and snip.get("tags", []) == cur.get("tags", []):
