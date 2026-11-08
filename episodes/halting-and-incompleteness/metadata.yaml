@@ -1,0 +1,45 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Godel and Turing proved the same theorem"
+  title_alternatives:
+    - "The halting problem is the incompleteness theorem in disguise"
+    - "What problems can we solve? Turing, Godel, and the limits of reasoning"
+  description: |
+    In 1930 Hilbert said "We must know. We will know." The day before, Godel had announced that no fixed set of rules can get us there. Six years later Turing proved that no machine can tell which programs halt. One theorem is about proofs and the other is about machines, but they're the same theorem. To ask "what problems can we solve?" you have to define "problem" and "solve". Do it with strings and machines and you get the halting problem. Do it with sentences and proofs and you get incompleteness. We prove both, put them side by side, and get incompleteness straight out of the halting problem.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #HaltingProblem #Incompleteness #Godel #Turing #TuringMachine #Computability #MathematicalLogic #Diagonalization #Hilbert
+  tags: [halting problem, Godel incompleteness theorem, Turing machine, computability, undecidable, mathematical logic, Hilbert's program, diagonal argument, Godel numbering, proof theory, Goldbach conjecture, Lawvere fixed point theorem, Curry-Howard, math, computer science]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "The question no program can answer"
+    caption: "Does this program ever stop? No program can answer that for every program, and the proof fits in a minute."
+    hashtags: "#math #HaltingProblem #Turing #ComputerScience"
+    cover:
+      at: 41
+      text: The question no program can answer
+  short2:
+    title: "A true statement your rules can't prove"
+    caption: "Whatever rules you pick for arithmetic, there's a true statement they can't prove. Here's how Godel built one."
+    hashtags: "#math #Godel #Incompleteness #Logic"
+    cover:
+      at: 44
+      text: True, but no proof
+  short3:
+    title: "Godel's theorem is Turing's in disguise"
+    caption: "Godel's incompleteness theorem is hiding inside the halting problem. A proof checker is a machine, and that's all it takes."
+    hashtags: "#math #Godel #HaltingProblem #Logic"
+    cover:
+      at: 44.9
+      text: "G\u00f6del, out of Turing"
