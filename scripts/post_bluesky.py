@@ -17,17 +17,26 @@ MAX_GRAPHEMES = 300
 
 
 def text_for(p):
-    """Title plus the caption's hashtags, as rich text so the tags are clickable."""
+    """The shared caption (hook, link to the long-form, hashtags) as rich text, so the link
+    and tags are clickable. Hashtags that would pass the length limit are dropped."""
     from atproto import client_utils
 
-    tags = [w.strip(".,!?") for w in p["caption"].split() if w.startswith("#")]
-    tb = client_utils.TextBuilder().text(f"{p['title']}.")
-    used = len(p["title"]) + 1
-    for t in tags:
-        if used + len(t) + 1 > MAX_GRAPHEMES:
+    from mathvid.publish import POINTER
+
+    if not p.get("long_url"):
+        raise SystemExit("Payload has no long_url; rerun publish_prep.py after the YouTube upload.")
+    pre, _, post = POINTER.partition("{url}")
+    tb = client_utils.TextBuilder().text(f"{p['hook']}\n\n{pre}").link(p["long_url"], p["long_url"])
+    used = len(p["hook"]) + 2 + len(POINTER.format(url=p["long_url"]))
+    if post:
+        tb.text(post)
+    sep = "\n\n"
+    for t in p.get("hashtags", []):
+        if used + len(sep) + len(t) > MAX_GRAPHEMES:
             break
-        tb.text(" ").tag(t, t.lstrip("#"))
-        used += len(t) + 1
+        tb.text(sep).tag(t, t.lstrip("#"))
+        used += len(sep) + len(t)
+        sep = " "
     return tb
 
 

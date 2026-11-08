@@ -1,5 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {repo_url} and {chapters} are filled in at publish time.
+# {chapters} is filled in at publish time. Short captions are the hook, then a link to
+# the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -12,11 +13,8 @@ long:
 
     {chapters}
 
-    Animation source and script: {repo_url}
-    Narration: an AI clone of my own voice reading a script I wrote.
-
     #RationalNumbers #Countable #DenseOrder #LinearOrder #OrderIsomorphism #CantorsIsomorphismTheorem #BackAndForth #SetTheory
-  tags: [rational numbers, countable sets, dense linear order, order isomorphism, back and forth, Cantor, set theory, math, manim]
+  tags: [rational numbers, countable sets, dense linear order, order isomorphism, back and forth, Cantor, set theory, math]
   category: Education
   made_for_kids: false
   ai_disclosure: true
@@ -24,7 +22,9 @@ long:
 shorts:
   short1:
     title: "Throw away most fractions. Nothing changes."
-    caption: "Keep only the fractions between 0 and 1 and between 2 and 3. Match them to all the fractions with threads that never cross, and it's the same line. #math #RationalNumbers #OrderIsomorphism #BackAndForth"
+    caption: "Keep only the fractions between 0 and 1 and between 2 and 3. Match them to all the fractions with threads that never cross, and it's the same line."
+    hashtags: "#math #RationalNumbers #OrderIsomorphism #BackAndForth"
   short2:
     title: "There are exactly as many fractions as integers"
-    caption: "Between any two integers sit infinitely many fractions, yet the two sets are the same size. One table proves it. #math #Countable #SetTheory #RationalNumbers"
+    caption: "Between any two integers sit infinitely many fractions, yet the two sets are the same size. One table proves it."
+    hashtags: "#math #Countable #SetTheory #RationalNumbers"
