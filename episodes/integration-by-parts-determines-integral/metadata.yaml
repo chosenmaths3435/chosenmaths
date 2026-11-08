@@ -1,5 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {repo_url} and {chapters} are filled in at publish time.
+# {chapters} is filled in at publish time. Short captions are the hook, then a link to
+# the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -14,9 +15,7 @@ long:
 
     {chapters}
 
-    Animation source and script: {repo_url}
-    Narration: an AI clone of my own voice reading a script I wrote.
-  tags: [calculus, integration by parts, power rule, math, integrals, proof, manim]
+  tags: [calculus, integration by parts, power rule, math, integrals, proof]
   category: Education
   made_for_kids: false
   ai_disclosure: true
@@ -24,7 +23,9 @@ long:
 shorts:
   short1:
     title: "An integral that solves itself"
-    caption: "Integration by parts can hand you back the integral you started with. That's how it works out x^2/2, then x^3/3, and on up the power rule. #calculus #math"
+    caption: "Integration by parts can hand you back the integral you started with. That's how it works out x^2/2, then x^3/3, and on up the power rule."
+    hashtags: "#calculus #math"
   short2:
     title: "Integration by parts is a rectangle"
-    caption: "The area under y = t^k is exactly 1/(k+1) of its rectangle. Integration by parts shows why. #calculus #math"
+    caption: "The area under y = t^k is exactly 1/(k+1) of its rectangle. Integration by parts shows why."
+    hashtags: "#calculus #math"

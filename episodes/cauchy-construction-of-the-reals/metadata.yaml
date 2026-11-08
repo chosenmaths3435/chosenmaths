@@ -1,5 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {repo_url} and {chapters} are filled in at publish time.
+# {chapters} is filled in at publish time. Short captions are the hook, then a link to
+# the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -12,11 +13,8 @@ long:
 
     {chapters}
 
-    Animation source and script: {repo_url}
-    Narration: an AI clone of my own voice reading a script I wrote.
-
     #CauchySequences #RealNumbers #EquivalenceClasses #Completion #pAdicNumbers #RealAnalysis #Irrational
-  tags: [square root of 2, real numbers, Cauchy sequences, construction of the reals, irrational numbers, p-adic numbers, real analysis, math, manim]
+  tags: [square root of 2, real numbers, Cauchy sequences, construction of the reals, irrational numbers, p-adic numbers, real analysis, math]
   category: Education
   made_for_kids: false
   ai_disclosure: true
@@ -24,7 +22,9 @@ long:
 shorts:
   short1:
     title: "√2 is an infinite set of lists"
-    caption: "No fraction squares to 2, but 1, 1.4, 1.41, 1.414, ... close in on the spot where it should be. So make the list the number. That's also why 0.999... = 1. #math #RealNumbers #CauchySequences"
+    caption: "No fraction squares to 2, but 1, 1.4, 1.41, 1.414, ... close in on the spot where it should be. So make the list the number. That's also why 0.999... = 1."
+    hashtags: "#math #RealNumbers #CauchySequences"
   short2:
     title: "1 + 2 + 4 + 8 + ... = -1?"
-    caption: "Not for the numbers you know. But change how you measure the distance between fractions, and you get a number system where it's true. #math #pAdicNumbers #NumberTheory"
+    caption: "Not for the numbers you know. But change how you measure the distance between fractions, and you get a number system where it's true."
+    hashtags: "#math #pAdicNumbers #NumberTheory"

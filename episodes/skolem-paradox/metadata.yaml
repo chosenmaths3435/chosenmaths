@@ -1,5 +1,6 @@
 # Upload metadata. The publish step reads this; edit freely.
-# {repo_url} and {chapters} are filled in at publish time.
+# {chapters} is filled in at publish time. Short captions are the hook, then a link to
+# the long-form video (added at publish time), then the hashtags.
 # Descriptions keep line breaks as written: one line per paragraph.
 
 long:
@@ -12,11 +13,8 @@ long:
 
     {chapters}
 
-    Animation source and script: {repo_url}
-    Narration: an AI clone of my own voice reading a script I wrote.
-
     #SkolemsParadox #LowenheimSkolem #SetTheory #ModelTheory #Countable #Uncountable #CantorsDiagonal #MathematicalLogic #Godel
-  tags: [Skolem's paradox, Lowenheim-Skolem theorem, set theory, ZFC, model theory, countable, uncountable, Cantor diagonal argument, mathematical logic, Godel incompleteness, math, manim]
+  tags: [Skolem's paradox, Lowenheim-Skolem theorem, set theory, ZFC, model theory, countable, uncountable, Cantor diagonal argument, mathematical logic, Godel incompleteness, math]
   category: Education
   made_for_kids: false
   ai_disclosure: true
@@ -24,7 +22,9 @@ long:
 shorts:
   short1:
     title: "The real numbers are uncountable... from inside"
-    caption: "If set theory is consistent, there's a universe where every theorem holds, Cantor's included, yet everything in it can be listed. The list exists, but not inside the universe. #math #SkolemsParadox #SetTheory #Uncountable"
+    caption: "If set theory is consistent, there's a universe where every theorem holds, Cantor's included, yet everything in it can be listed. The list exists, but not inside the universe."
+    hashtags: "#math #SkolemsParadox #SetTheory #Uncountable"
   short2:
     title: "A countable copy of the real numbers"
-    caption: "Throw away almost every real number, and no statement about plus, times and order notices. That's the Lowenheim-Skolem theorem. #math #LowenheimSkolem #ModelTheory #RealNumbers"
+    caption: "Throw away almost every real number, and no statement about plus, times and order notices. That's the Lowenheim-Skolem theorem."
+    hashtags: "#math #LowenheimSkolem #ModelTheory #RealNumbers"

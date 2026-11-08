@@ -1,10 +1,14 @@
 """Turn an episode's metadata into ready-to-post payloads, and check platform limits.
 
-    uv run scripts/publish_prep.py <slug> --repo-url URL
+    uv run scripts/publish_prep.py <slug>
 
 Reads episodes/<slug>/metadata.yaml and out/<slug>/ (chapters.txt, videos, captions,
 thumbnail). Writes out/<slug>/publish/<name>.json, one per upload, and prints any limit
 violations. Exits non-zero if a payload is invalid, so nothing gets posted half-checked.
+
+Short captions link to the long-form video, so the short payloads are only written once
+the long-form is uploaded (it is in published.yaml): run this, upload long.json, run it
+again.
 """
 
 import argparse
@@ -15,6 +19,9 @@ from pathlib import Path
 
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from mathvid.publish import long_url, short_caption  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 
 # Platform limits (characters unless noted). Checked 2026-11; adjust if platforms change.
@@ -23,6 +30,8 @@ LIMITS = {
     "youtube_description": 5000,
     "youtube_tags_total": 500,
     "short_caption": 2200,  # TikTok and Instagram
+    "threads_text": 500,
+    "bluesky_text": 300,  # graphemes; hashtags that do not fit are dropped, the rest must fit
     "short_hashtags": 30,  # Instagram
     "short_seconds": 60,  # our target; platforms allow more
 }
@@ -39,7 +48,7 @@ def duration(path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("slug")
-    ap.add_argument("--repo-url", required=True, help="public URL of this episode's source")
+    ap.add_argument("--repo-url", default="", help="fills {repo_url} if the description uses it")
     ap.add_argument("--out-dir", help="read finished files from here instead of out/<slug> (for testing)")
     a = ap.parse_args()
 
@@ -91,8 +100,23 @@ def main():
     }}
 
     # Shorts
-    for name, s in (meta.get("shorts") or {}).items():
-        cap = s["caption"].replace("{repo_url}", a.repo_url)
+    url = long_url(a.slug)
+    shorts = meta.get("shorts") or {}
+    if shorts and not url:
+        for name in shorts:
+            (pub / f"{name}.json").unlink(missing_ok=True)
+        print("shorts: waiting for the long-form, since their captions link to it. Upload long.json"
+              " to YouTube, then run this again.")
+        shorts = {}
+    for name, s in shorts.items():
+        if "#" in s["caption"]:
+            problems.append(f"{name}: hashtags go in hashtags:, not in the caption")
+        cap = short_caption(s, url)
+        hook_and_link = short_caption({**s, "hashtags": ""}, url)
+        if len(cap) > LIMITS["threads_text"]:
+            problems.append(f"{name}: caption is {len(cap)} chars (Threads max {LIMITS['threads_text']})")
+        if len(hook_and_link) > LIMITS["bluesky_text"]:
+            problems.append(f"{name}: hook plus link is {len(hook_and_link)} chars (Bluesky max {LIMITS['bluesky_text']})")
         video = out / f"{name}.mp4"
         if len(cap) > LIMITS["short_caption"]:
             problems.append(f"{name}: caption is {len(cap)} chars (max {LIMITS['short_caption']})")
@@ -104,6 +128,9 @@ def main():
             "kind": "short",
             "title": s["title"],
             "caption": cap,
+            "hook": s["caption"].strip(),
+            "long_url": url,
+            "hashtags": s.get("hashtags", "").split(),
             "ai_disclosure": bool(long.get("ai_disclosure", True)),
             "video": need(video),
             "captions": need(out / f"{name}.srt"),

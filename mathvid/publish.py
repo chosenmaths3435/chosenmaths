@@ -76,3 +76,20 @@ def env_or_conf(name, mapping):
     if missing:
         sys.exit(f"Missing {', '.join(missing)} in videos/.env (or {CONF / (name + '.json')}).")
     return out
+
+
+POINTER = "Full video on YouTube: {url}"
+
+
+def long_url(slug):
+    """The long-form video's YouTube link from published.yaml, or None before it is uploaded."""
+    path = ROOT / "episodes" / slug / "published.yaml"
+    data = (yaml.safe_load(path.read_text()) if path.exists() else None) or []
+    urls = [e["url"] for e in data if e.get("platform") == "youtube" and e.get("item") == "long"]
+    return urls[-1] if urls else None
+
+
+def short_caption(short, url):
+    """A short's caption on every platform: the hook, a link to the long-form, the hashtags."""
+    parts = [short["caption"].strip(), POINTER.format(url=url), short.get("hashtags", "").strip()]
+    return "\n\n".join(p for p in parts if p)
