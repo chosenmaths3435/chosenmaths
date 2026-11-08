@@ -430,29 +430,28 @@ Either way, H is <bookmark mark="wrong"/>wrong.
 > visual: a box labelled "your rules" with a list of axioms. Beside it, a sentence in
 > a box labelled G, with the text hidden, a "true" tag, and a "no proof" tag.
 [b1] There's a true statement about numbers that your rules can't prove. Whatever your
-rules are. Here's how Kurt Godel <bookmark mark="found"/>found it.
+rules are. Here's how Godel <bookmark mark="found"/>found it.
 
 > visual: a numbered proof, each line tagged "axiom" or "rule". A small machine ticks
 > each line.
-[b2] A proof is a list of statements, each one an axiom or following from earlier
-lines by a rule. A machine can <bookmark mark="mech"/>check it.
+[b2] A proof is a list of statements, each one following from axioms by fixed rules.
+A machine can <bookmark mark="mech"/>check it.
 
 > visual: symbols get code numbers, then a statement collapses into one number, then a
 > proof into a longer one. Text: "p codes a proof of s" tagged "a statement about
 > numbers".
 [b3] Godel turned every symbol into a number. So every statement, and every proof, gets
 a <bookmark mark="code"/>code number. Now "this number codes a proof of that
-statement" is itself a statement about numbers.
+statement" is a statement about numbers.
 
 > visual: G's text is revealed: "G has no proof." An arrow loops from the text back to G.
 [b4] Then he built a statement, G, that says <bookmark mark="g"/>"G has no proof".
 
 > visual: "suppose G has a proof" leads to "the rules proved something false", red
 > cross. Then "G has no proof" is ticked and matched against G's text. G gets "true".
-[b5] Suppose G had a proof. But G says it has no proof, so the rules proved something
-false. If the rules never
-prove anything false, that can't happen. So G has no proof. But that's exactly what G
-says. So G is <bookmark mark="true"/>true.
+[b5] Suppose G had a proof. G says it has no proof, so the rules proved something false.
+If the rules never prove anything false, that's impossible. So G has no proof, which is
+exactly what G says. So G is <bookmark mark="true"/>true.
 
 > visual: G is added to the axioms; a new G' appears, then G'', then "...".
 [b6] A true statement with no proof. Adding G as an axiom doesn't help. The new
@@ -462,13 +461,12 @@ check, and that never prove anything false, have this gap.
 ## short3 The same theorem
 > visual: two labels, "Godel: incompleteness" and "Turing: the halting problem". At
 > "disguise" the first slides over the second like a mask.
-[b1] Godel's incompleteness theorem is hiding inside the halting problem. It's
-Turing's theorem in <bookmark mark="disguise"/>disguise.
+[b1] Godel's incompleteness theorem is hiding
+<bookmark mark="disguise"/>inside Turing's halting problem.
 
 > visual: a program with "does it ever stop?" and a red cross over a box labelled H.
-[b2] The halting problem says no program can tell, for every program, whether it
-<bookmark mark="stop"/>eventually stops. Alan Turing proved a version of it in
-nineteen thirty-six.
+[b2] The halting problem says no program can <bookmark mark="stop"/>tell, for every
+program, whether it eventually stops.
 
 > visual: a machine checking a stream of candidate proofs, shortest first.
 [b3] Now take a proof system for arithmetic, with proofs a machine can check. Then a
