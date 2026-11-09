@@ -1,0 +1,46 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Every proof is a program: the Curry-Howard correspondence"
+  title_alternatives:
+    - "Proofs are programs, from P implies Q to homotopy type theory"
+    - "The one law of logic that won't run"
+  description: |
+    A proof that P implies Q is a function. A proof of "P and Q" is a pair. A proof by induction is a recursive program, and you can run it. We build the Curry-Howard correspondence up from propositional logic to dependent types in Lean, and watch the type system grow as the logic says more. Along the way: why "P or not P" has no program (it would solve the halting problem), a theorem about binary numbers that prints its own answer, the equality type and its induction principle, and why two proofs of the same equation can be different, which is where homotopy type theory starts.
+    Every Lean snippet in the video compiles; the file is in the source repo.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #CurryHoward #TypeTheory #Lean #Logic #ProofsAsPrograms #HoTT #ComputerScience #Math
+  tags: [Curry-Howard correspondence, propositions as types, proofs as programs, type theory, Lean, Lean 4, dependent types, intuitionistic logic, constructive mathematics, law of excluded middle, induction, recursion, equality type, path induction, homotopy type theory, univalence, halting problem, math, computer science]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "The law of logic that Lean won't run"
+    caption: "P or not P is a law of logic. Lean refuses to run it, and the reason is the halting problem."
+    hashtags: "#math #Logic #Lean #ComputerScience"
+    cover:
+      at: 42
+      text: The law that won't run
+  short2:
+    title: "This proof is a program you can run"
+    caption: "A proof by induction is a recursive program. Run this one on 13 and it prints 13 in binary."
+    hashtags: "#math #Induction #Recursion #Lean"
+    cover:
+      at: 46.5
+      text: A proof you can run
+  short3:
+    title: "Two different proofs of the same equation"
+    caption: "Can two proofs that a equals b be different? In homotopy type theory they can, and equality gets a shape."
+    hashtags: "#math #HoTT #TypeTheory #Logic"
+    cover:
+      at: 42
+      text: Equality has a shape
