@@ -8,7 +8,8 @@ violations. Exits non-zero if a payload is invalid, so nothing gets posted half-
 
 Short captions link to the long-form video, so the short payloads are only written once
 the long-form is uploaded (it is in published.yaml): run this, upload long.json, run it
-again.
+again. An episode with no `long:` in metadata.yaml is shorts only: there is no long
+payload, and each caption is just the hook and the hashtags.
 """
 
 import argparse
@@ -64,44 +65,17 @@ def main():
             problems.append(f"missing file: {path}")
         return str(path)
 
-    # Long-form
-    long = meta["long"]
-    chapters = (out / "chapters.txt").read_text().strip() if (out / "chapters.txt").exists() else ""
-    if not chapters:
-        problems.append("missing chapters.txt (run scripts/finish.py first)")
-    desc = long_description(long, chapters, a.slug)
-    if "{" in desc:
-        problems.append(f"unfilled placeholder in description: {re.findall(r'{\\w+}', desc)}")
-    for name in episode.get("coauthors") or []:
-        if name not in desc:
-            problems.append(f"coauthor {name!r} not credited in the description")
-    if len(long["title"]) > LIMITS["youtube_title"]:
-        problems.append(f"youtube title is {len(long['title'])} chars (max {LIMITS['youtube_title']})")
-    if len(desc) > LIMITS["youtube_description"]:
-        problems.append(f"youtube description is {len(desc)} chars (max {LIMITS['youtube_description']})")
-    if any(c in desc for c in "<>"):
-        problems.append("youtube description contains < or >, which the API rejects")
-    tags = long.get("tags", [])
-    if sum(len(t) + (2 if " " in t else 0) + 1 for t in tags) > LIMITS["youtube_tags_total"]:
-        problems.append("youtube tags exceed 500 characters in total")
-
-    payloads = {"long": {
-        "kind": "long",
-        "title": long["title"],
-        "description": desc,
-        "tags": tags,
-        "category": long.get("category", "Education"),
-        "made_for_kids": bool(long.get("made_for_kids", False)),
-        "ai_disclosure": bool(long.get("ai_disclosure", True)),
-        "video": need(out / f"{a.slug}.mp4"),
-        "thumbnail": need(out / "thumbnail.png"),
-        "captions": need(out / f"{a.slug}.srt"),
-    }}
+    long = meta.get("long")
+    standalone = long is None  # shorts only
+    ai = bool((long or meta).get("ai_disclosure", True))
+    payloads = {}
+    if not standalone:
+        payloads["long"] = long_payload(a.slug, long, out, episode, problems, need)
 
     # Shorts
-    url = long_url(a.slug)
+    url = None if standalone else long_url(a.slug)
     shorts = meta.get("shorts") or {}
-    if shorts and not url:
+    if shorts and not url and not standalone:
         for name in shorts:
             (pub / f"{name}.json").unlink(missing_ok=True)
         print("shorts: waiting for the long-form, since their captions link to it. Upload long.json"
@@ -130,7 +104,7 @@ def main():
             "hook": s["caption"].strip(),
             "long_url": url,
             "hashtags": s.get("hashtags", "").split(),
-            "ai_disclosure": bool(long.get("ai_disclosure", True)),
+            "ai_disclosure": ai,
             "video": need(video),
             "captions": need(out / f"{name}.srt"),
         }
@@ -150,6 +124,40 @@ def main():
             print("  -", p)
         sys.exit(1)
     print("all checks passed")
+
+
+def long_payload(slug, long, out, episode, problems, need):
+    chapters = (out / "chapters.txt").read_text().strip() if (out / "chapters.txt").exists() else ""
+    if not chapters:
+        problems.append("missing chapters.txt (run scripts/finish.py first)")
+    desc = long_description(long, chapters, slug)
+    if "{" in desc:
+        problems.append(f"unfilled placeholder in description: {re.findall(r'{\\w+}', desc)}")
+    for name in episode.get("coauthors") or []:
+        if name not in desc:
+            problems.append(f"coauthor {name!r} not credited in the description")
+    if len(long["title"]) > LIMITS["youtube_title"]:
+        problems.append(f"youtube title is {len(long['title'])} chars (max {LIMITS['youtube_title']})")
+    if len(desc) > LIMITS["youtube_description"]:
+        problems.append(f"youtube description is {len(desc)} chars (max {LIMITS['youtube_description']})")
+    if any(c in desc for c in "<>"):
+        problems.append("youtube description contains < or >, which the API rejects")
+    tags = long.get("tags", [])
+    if sum(len(t) + (2 if " " in t else 0) + 1 for t in tags) > LIMITS["youtube_tags_total"]:
+        problems.append("youtube tags exceed 500 characters in total")
+
+    return {
+        "kind": "long",
+        "title": long["title"],
+        "description": desc,
+        "tags": tags,
+        "category": long.get("category", "Education"),
+        "made_for_kids": bool(long.get("made_for_kids", False)),
+        "ai_disclosure": bool(long.get("ai_disclosure", True)),
+        "video": need(out / f"{slug}.mp4"),
+        "thumbnail": need(out / "thumbnail.png"),
+        "captions": need(out / f"{slug}.srt"),
+    }
 
 
 if __name__ == "__main__":

@@ -221,10 +221,15 @@ def note_idea(slug, plan, yt):
         if not hit:
             continue
         meta = yaml.safe_load((ROOT / "episodes" / slug / "metadata.yaml").read_text())
-        day = parse(plan["at"]["long"]).astimezone().date() if "long" in plan["at"] else dt.date.today()
+        day = min(parse(at) for at in plan["at"].values()).astimezone().date()
         shorts = ", ".join(yt[i]["url"] for i in plan["at"] if i != "long" and i in yt)
-        lines[hit[0]] = (f"- Published {day} as \"{meta['long']['title']}\": {yt['long']['url']}.\n"
-                         f"  Shorts: {shorts}. All posts are in {marker}published.yaml.\n")
+        if "long" in yt:
+            lines[hit[0]] = (f"- Published {day} as \"{meta['long']['title']}\": {yt['long']['url']}.\n"
+                             f"  Shorts: {shorts}. All posts are in {marker}published.yaml.\n")
+        else:
+            title = next(iter(meta["shorts"].values()))["title"]
+            lines[hit[0]] = (f"- Published {day} as the short \"{title}\": {shorts}.\n"
+                             f"  All posts are in {marker}published.yaml.\n")
         readme.write_text("".join(lines))
         subprocess.run(["uv", "run", "scripts/build_index.py"], cwd=PRIVATE, capture_output=True)
         rel = str(readme.relative_to(PRIVATE))
@@ -242,14 +247,13 @@ def parse(at):
 def release(slug, now, repo, dry, done):
     plan = yaml.safe_load((ROOT / "episodes" / slug / "release.yaml").read_text())
     meta = yaml.safe_load((ROOT / "episodes" / slug / "metadata.yaml").read_text())
-    title = meta["long"]["title"]
-    for item, at in sorted(plan["at"].items(), key=lambda kv: str(kv[1])):
-        if parse(at) > now:
-            continue
+    title = (meta.get("long") or next(iter(meta["shorts"].values())))["title"]
+    due = [(i, at) for i, at in sorted(plan["at"].items(), key=lambda kv: str(kv[1])) if parse(at) <= now]
+    if due and plan.get("push") and not push(plan["push"], repo, dry):
+        log(f"{slug}: push failed; will retry next run")
+        notify(f"{slug}: pushing the source to GitHub failed. See {LOG}.", urgent=True)
+    for item, at in due:
         if item == "long":
-            if plan.get("push") and not push(plan["push"], repo, dry):
-                log(f"{slug}: push failed; will retry next run")
-                notify(f"{slug}: pushing the source to GitHub failed. See {LOG}.", urgent=True)
             continue
         seen = {(e["platform"], e["item"]) for e in published(slug)}
         todo = [p for p in plan["platforms"] if (p, item) not in seen]

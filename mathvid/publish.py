@@ -91,8 +91,9 @@ def long_url(slug):
 
 
 def short_caption(short, url):
-    """A short's caption on every platform: the hook, a link to the long-form, the hashtags."""
-    parts = [short["caption"].strip(), POINTER.format(url=url), short.get("hashtags", "").strip()]
+    """A short's caption on every platform: the hook, a link to the long-form, the hashtags.
+    An episode with no long-form (url None) gets the hook and the hashtags only."""
+    parts = [short["caption"].strip(), POINTER.format(url=url) if url else "", short.get("hashtags", "").strip()]
     return "\n\n".join(p for p in parts if p)
 
 
