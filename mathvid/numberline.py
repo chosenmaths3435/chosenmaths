@@ -167,3 +167,33 @@ class ZoomLine(VGroup):
         """A hollow circle marking a point (a hole) on the line; follows the zoom."""
         return always_redraw(lambda: Circle(radius=radius, color=color, stroke_width=width)
                              .move_to(self.p(x)))
+
+
+class RealLine(VGroup):
+    """A plain, static number line with integer ticks.
+
+    Place it with `y` and `x0` (screen x of the middle of the range) and do not move it
+    afterward: `p(v)` maps a value to its screen point. `labels` maps a value to a TeX
+    label; by default every integer in range is labelled.
+    """
+
+    def __init__(self, lo=-3.5, hi=3.5, length=12.0, y=0.0, x0=0.0, ticks=True, size=26,
+                 color=FG, stroke=4, labels=None, label_color=MUTED):
+        from mathvid.style import math
+
+        super().__init__()
+        self.lo, self.hi, self.length, self.y, self.x0 = lo, hi, length, y, x0
+        self.line = Line(self.p(lo), self.p(hi), color=color, stroke_width=stroke)
+        self.ticks, self.labels = VGroup(), VGroup()
+        if ticks:
+            if labels is None:
+                labels = {k: str(k) for k in range(_m.ceil(lo), _m.floor(hi) + 1)}
+            for v, s in labels.items():
+                self.ticks.add(Line(self.p(v) + UP * 0.1, self.p(v) + DOWN * 0.1, color=color,
+                                    stroke_width=3))
+                self.labels.add(math(s, size=size, color=label_color).next_to(self.p(v), DOWN, 0.2))
+        self.add(self.line, self.ticks, self.labels)
+
+    def p(self, v):
+        x = self.x0 + (v - (self.lo + self.hi) / 2) / (self.hi - self.lo) * self.length
+        return np.array([x, self.y, 0.0])
