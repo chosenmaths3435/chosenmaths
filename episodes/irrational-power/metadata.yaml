@@ -1,0 +1,14 @@
+# Upload metadata. The publish step reads this; edit freely.
+# Shorts only: there is no `long:` section, so each caption is the hook, then the hashtags,
+# with no link to a long-form video.
+
+ai_disclosure: true
+
+shorts:
+  short1:
+    title: "Irrational to an irrational power: can it be rational?"
+    caption: "Can an irrational number raised to an irrational power be rational? Yes. Here's a proof that an example exists, which never tells you what the example is."
+    hashtags: "#math #proof #IrrationalNumbers #NumberTheory"
+    cover:
+      at: 41.5
+      text: A proof that won't say which

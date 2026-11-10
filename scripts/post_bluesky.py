@@ -23,13 +23,16 @@ def text_for(p):
 
     from mathvid.publish import POINTER
 
-    if not p.get("long_url"):
+    if p.get("long_url"):
+        pre, _, post = POINTER.partition("{url}")
+        tb = client_utils.TextBuilder().text(f"{p['hook']}\n\n{pre}").link(p["long_url"], p["long_url"])
+        used = len(p["hook"]) + 2 + len(POINTER.format(url=p["long_url"]))
+        if post:
+            tb.text(post)
+    elif p.get("caption", "").startswith(p["hook"]) and POINTER.split("{")[0] not in p["caption"]:
+        tb, used = client_utils.TextBuilder().text(p["hook"]), len(p["hook"])  # shorts-only episode
+    else:
         raise SystemExit("Payload has no long_url; rerun publish_prep.py after the YouTube upload.")
-    pre, _, post = POINTER.partition("{url}")
-    tb = client_utils.TextBuilder().text(f"{p['hook']}\n\n{pre}").link(p["long_url"], p["long_url"])
-    used = len(p["hook"]) + 2 + len(POINTER.format(url=p["long_url"]))
-    if post:
-        tb.text(post)
     sep = "\n\n"
     for t in p.get("hashtags", []):
         if used + len(sep) + len(t) > MAX_GRAPHEMES:
