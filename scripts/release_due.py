@@ -8,8 +8,16 @@ twice: an item is skipped on a platform once published.yaml has any entry for it
 failed attempt is recorded with state "failed" and is not retried, because it may have
 posted anyway; check the platform by hand, then delete that entry to let the job retry.
 
+Once a day, while any release is pending, it also runs check_accounts.py and notifies if
+a login is broken, so it can be fixed before the next post is due.
+
+When every item of an episode is out (YouTube public, each short on every platform), it
+wraps up: sets status: published, commits the episode's records in videos/ and pushes
+main, and replaces the "Scheduled" line in the idea's README (private repo, found by
+"videos/episodes/<slug>/") with the links, then rebuilds ideas/INDEX.md and commits that.
+
 Each run logs to ~/.local/state/math-videos/release.log and shows a desktop notification
-when it posts or fails.
+when it posts, fails, or finishes an episode.
 """
 
 import argparse
@@ -20,10 +28,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+import re
+
 import requests
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+PRIVATE = ROOT.parent  # the math-content repo, holding ideas/
 STATE = Path.home() / ".local" / "state" / "math-videos"
 LOG = STATE / "release.log"
 GH = ["gh", "--repo"]
@@ -76,7 +87,7 @@ def mark_failed(slug, platform, item, note):
 
 
 def push(sha, repo, dry):
-    """Fast-forward origin's main to exactly `sha`, so later local commits stay unpushed."""
+    """Fast-forward origin's main to `sha` (a commit, or "main" for the local branch)."""
     url = f"https://github.com/{repo}.git"
     remote = subprocess.run(["git", "ls-remote", url, "refs/heads/main"], cwd=ROOT, capture_output=True,
                             text=True).stdout.split()
@@ -126,15 +137,111 @@ def post_cmd(platform, payload, repo, slug, item):
     return cmd
 
 
+def is_public_on_youtube(video_id):
+    r = requests.get("https://www.youtube.com/oembed",
+                     params={"url": f"https://youtu.be/{video_id}", "format": "json"}, timeout=30)
+    return r.status_code == 200  # private and scheduled videos return 401/403
+
+
+def check_accounts(dry):
+    """Once a day: notify if any platform login is broken."""
+    stamp = STATE / "accounts-checked"
+    today = dt.date.today().isoformat()
+    if dry or (stamp.exists() and stamp.read_text().strip() == today):
+        return
+    try:
+        r = subprocess.run(["uv", "run", "scripts/check_accounts.py"], cwd=ROOT, capture_output=True,
+                           text=True, timeout=300)
+        bad = [ln for ln in r.stdout.splitlines() if ln.startswith(("FAIL", "todo"))]
+    except subprocess.TimeoutExpired:
+        bad = ["the account check hung; YouTube probably wants a browser login (post_youtube.py whoami)"]
+    stamp.write_text(today)
+    for ln in bad:
+        log("account check: " + ln)
+    if bad:
+        notify("A login needs fixing before the next post: " + "; ".join(ln.split(None, 2)[1] if
+               ln.startswith(("FAIL", "todo")) else ln for ln in bad) + f". See {LOG}.", urgent=True)
+
+
+def git_commit(repo_dir, paths, msg, identity=None):
+    ident = ["-c", f"user.name={identity[0]}", "-c", f"user.email={identity[1]}"] if identity else []
+    paths = [p for p in paths if (Path(repo_dir) / p).exists()]
+    if subprocess.run(["git", "add", "--", *paths], cwd=repo_dir).returncode != 0:
+        return False
+    r = subprocess.run(["git", *ident, "commit", "-q", "-m", msg, "--", *paths], cwd=repo_dir,
+                       capture_output=True, text=True)
+    return r.returncode == 0 or "nothing to commit" in r.stdout + r.stderr
+
+
+CHANNEL = ("Chosen Maths", "chosenmaths3435@users.noreply.github.com")
+
+
+def wrap_up(slug, plan, now, repo, dry):
+    """Finish an episode whose every item is out. Returns True once it is wrapped up."""
+    ep = ROOT / "episodes" / slug
+    if any(parse(at) > now for at in plan["at"].values()):
+        return False
+    entries = published(slug)
+    public = {(e["platform"], e["item"]) for e in entries if e.get("state") == "public"}
+    shorts = [i for i in plan["at"] if i != "long"]
+    if any((p, i) not in public for i in shorts for p in plan["platforms"]):
+        return False
+    yt = {e["item"]: e for e in entries if e["platform"] == "youtube" and e.get("id")}
+    if any(i not in yt or not is_public_on_youtube(yt[i]["id"]) for i in plan["at"]):
+        return False
+    if dry:
+        log(f"{slug}: would wrap up (status published, commit, push, idea README)")
+        return True
+    for e in entries:
+        if e["platform"] == "youtube" and e["item"] in plan["at"]:
+            e["state"] = "public"
+    (ep / "published.yaml").write_text(yaml.safe_dump(entries, sort_keys=False, allow_unicode=True))
+    epy = ep / "episode.yaml"
+    epy.write_text(re.sub(r"(?m)^status:\s*\S+", "status: published", epy.read_text(), count=1))
+    paths = [f"episodes/{slug}/{f}" for f in ("episode.yaml", "published.yaml", "release.yaml")]
+    if not git_commit(ROOT, paths, f"Publish the {slug} episode", CHANNEL):
+        notify(f"{slug}: everything is out, but committing the records failed. See {LOG}.", urgent=True)
+    elif not push("main", repo, dry):
+        notify(f"{slug}: everything is out, but pushing main failed. See {LOG}.", urgent=True)
+    note_idea(slug, plan, yt)
+    log(f"{slug}: fully released")
+    notify(f"{slug} is fully released on every platform.")
+    return True
+
+
+def note_idea(slug, plan, yt):
+    """Swap the idea README's "Scheduled" line for the links."""
+    marker = f"videos/episodes/{slug}/"
+    for readme in sorted((PRIVATE / "ideas").glob("*/README.md")):
+        lines = readme.read_text().splitlines(keepends=True)
+        hit = [i for i, ln in enumerate(lines) if ln.startswith("- Scheduled") and marker in ln]
+        if not hit:
+            continue
+        meta = yaml.safe_load((ROOT / "episodes" / slug / "metadata.yaml").read_text())
+        day = parse(plan["at"]["long"]).astimezone().date() if "long" in plan["at"] else dt.date.today()
+        shorts = ", ".join(yt[i]["url"] for i in plan["at"] if i != "long" and i in yt)
+        lines[hit[0]] = (f"- Published {day} as \"{meta['long']['title']}\": {yt['long']['url']}.\n"
+                         f"  Shorts: {shorts}. All posts are in {marker}published.yaml.\n")
+        readme.write_text("".join(lines))
+        subprocess.run(["uv", "run", "scripts/build_index.py"], cwd=PRIVATE, capture_output=True)
+        rel = str(readme.relative_to(PRIVATE))
+        if not git_commit(PRIVATE, [rel, "ideas/INDEX.md"], f"Note the published {slug} episode"):
+            notify(f"{slug}: could not commit the idea README note. See {LOG}.", urgent=True)
+        return
+    log(f"{slug}: no idea README has a Scheduled line for {marker}; add the links by hand")
+
+
+def parse(at):
+    when = at if isinstance(at, dt.datetime) else dt.datetime.fromisoformat(str(at).replace("Z", "+00:00"))
+    return when if when.tzinfo else when.replace(tzinfo=dt.timezone.utc)  # PyYAML may drop the Z
+
+
 def release(slug, now, repo, dry, done):
     plan = yaml.safe_load((ROOT / "episodes" / slug / "release.yaml").read_text())
     meta = yaml.safe_load((ROOT / "episodes" / slug / "metadata.yaml").read_text())
     title = meta["long"]["title"]
     for item, at in sorted(plan["at"].items(), key=lambda kv: str(kv[1])):
-        when = at if isinstance(at, dt.datetime) else dt.datetime.fromisoformat(str(at).replace("Z", "+00:00"))
-        if when.tzinfo is None:
-            when = when.replace(tzinfo=dt.timezone.utc)  # PyYAML may drop the Z
-        if when > now:
+        if parse(at) > now:
             continue
         if item == "long":
             if plan.get("push") and not push(plan["push"], repo, dry):
@@ -171,6 +278,7 @@ def release(slug, now, repo, dry, done):
                 mark_failed(slug, platform, item, err[0][:300])
                 notify(f"{slug} {item} on {platform} FAILED; it may or may not have posted. "
                        f"Check the platform. See {LOG}.", urgent=True)
+    wrap_up(slug, plan, now, repo, dry)
 
 
 def main():
@@ -188,12 +296,14 @@ def main():
         return  # another run is still posting
     now = (dt.datetime.fromisoformat(a.now.replace("Z", "+00:00")) if a.now
            else dt.datetime.now(dt.timezone.utc))
-    plans = sorted((ROOT / "episodes").glob("*/release.yaml"))
+    plans = [p for p in sorted((ROOT / "episodes").glob("*/release.yaml"))
+             if (yaml.safe_load((p.parent / "episode.yaml").read_text()) or {}).get("status") != "published"]
     if not plans:
         return
     if not online():
         log("offline; will try next run")
         return
+    check_accounts(a.dry_run)
     repo, done = repo_slug(), []
     for plan in plans:
         release(plan.parent.name, now, repo, a.dry_run, done)
