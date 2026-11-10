@@ -38,11 +38,14 @@ PRIVATE = ROOT.parent  # the math-content repo, holding ideas/
 STATE = Path.home() / ".local" / "state" / "math-videos"
 LOG = STATE / "release.log"
 GH = ["gh", "--repo"]
+DRY = False  # dry runs print but leave the log alone
 
 
 def log(msg):
     line = f"{dt.datetime.now().isoformat(timespec='seconds')} {msg}"
     print(line, flush=True)
+    if DRY:
+        return
     with LOG.open("a") as f:
         f.write(line + "\n")
 
@@ -286,6 +289,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="say what is due; post nothing")
     ap.add_argument("--now", help="pretend it is this UTC time (for testing with --dry-run)")
     a = ap.parse_args()
+    global DRY
+    DRY = a.dry_run
     if a.now and not a.dry_run:
         sys.exit("--now only works with --dry-run")
     STATE.mkdir(parents=True, exist_ok=True)
