@@ -1,0 +1,46 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Delete the arithmetic: the real numbers are just an order"
+  title_alternatives:
+    - "What actually is the real line?"
+    - "Only one line has these four properties"
+  description: |
+    Throw away addition, multiplication and distance, and keep only "less than". That is still enough to rebuild the real line, and there is only one way to do it. We cut the rationals at their holes the way Dedekind did in 1872, show that the filled-in line has no holes left, and run the same construction on other lines. Then Cantor's theorem from 1895: any line with no holes, dense, with no ends and a countable set of points spread through it is the real line. Each of the four facts is needed, and the long line shows why the last one matters. We end on Suslin's question, which the usual axioms of math can neither prove nor disprove.
+    This is the third video in a series: "So... what actually is sqrt(2)?" built the reals from lists of fractions, and "What makes the rational numbers so special?" proved that three facts pin down the rationals.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #RealNumbers #DedekindCuts #SetTheory #Logic #OrderTheory #Math #Analysis
+  tags: [real numbers, Dedekind cuts, construction of the real numbers, rational numbers, order theory, dense linear order, Cantor, back and forth, long line, ordinals, omega, Suslin problem, Suslin line, independence, ZFC, set theory, logic, real analysis, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "A real number is a cut"
+    caption: "The square root of two isn't a fraction. So where does it sit among the fractions? In a hole."
+    hashtags: "#math #RealNumbers #DedekindCuts #Analysis"
+    cover:
+      at: 26.5
+      text: A real number is a cut
+  short2:
+    title: "Only one line looks like this"
+    caption: "Throw away addition and multiplication and keep only less than. The real line is still the only line of its kind."
+    hashtags: "#math #RealNumbers #SetTheory #Logic"
+    cover:
+      at: 53.4
+      text: Only one line like this
+  short3:
+    title: "A question about lines that math can't settle"
+    caption: "Suslin asked a simple question about lines. The usual axioms of math can neither prove nor disprove the answer."
+    hashtags: "#math #SetTheory #Logic #ZFC"
+    cover:
+      at: 37.0
+      text: Math can't settle this
