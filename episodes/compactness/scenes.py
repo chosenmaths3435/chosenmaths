@@ -1296,3 +1296,13 @@ class S08Ending(VoiceoverScene):
             self.play(g.animate.set_opacity(0.0), run_time=rt(tr.get_remaining_duration()))
         self.wait(1.2)
         self.play(FadeOut(Group(*self.mobjects)), run_time=0.8)
+
+
+class Thumbnail(Scene):
+    def construct(self):
+        tiling = hex_tiling(unit=U5, side=HEX_SIDE, radius=7.6, opacity=0.75)
+        band = Rectangle(width=FW + 0.2, height=3.6, color=BG, fill_color=BG, fill_opacity=0.88, stroke_width=0)
+        t1 = text("Solve every finite piece,", size=84, weight="BOLD")
+        t2 = text("solve the infinite whole", size=84, weight="BOLD", color=PRIMARY)
+        VGroup(t1, t2).arrange(DOWN, buff=0.3)
+        self.add(tiling, band, t1, t2)

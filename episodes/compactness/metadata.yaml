@@ -1,0 +1,40 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "How to solve infinitely many problems at once (The Compactness Theorem)"
+  title_alternatives:
+    - "The compactness theorem: from finite to infinite"
+    - "Infinitesimals, coloring the plane, and compactness"
+  description: |
+    How do you solve infinitely many problems at the same time? Just solve every finite number of them. The compactness theorem of logic says this works, as long as you are willing to change the world you solve them in.
+    We set up the background: languages, models, and what it means for a model to satisfy a sentence. Then two applications. Keeping every true statement about the real numbers and adding a number smaller than every 1/n gives a number system with infinitesimals, the numbers Leibniz built calculus on. And coloring the plane so that points one unit apart get different colors: compactness says that if the plane needs five colors, some finite set of points already does, which is exactly what Aubrey de Grey found in 2018.
+    Then a proof sketch with ultraproducts and Los's theorem, and the link to topology: a space is compact when closed sets that always overlap in finite bunches all overlap at once. Tychonoff's theorem proves the coloring result directly, and the compactness theorem says a space of complete descriptions is compact.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #Logic #ModelTheory #Compactness #Infinitesimals #Topology #Math #GraphColoring
+  tags: [compactness theorem, model theory, mathematical logic, first-order logic, models, satisfaction, infinitesimals, nonstandard analysis, hyperreal numbers, Leibniz, Abraham Robinson, ultraproducts, ultrafilters, Los theorem, Hadwiger-Nelson problem, chromatic number of the plane, Moser spindle, de Grey, unit distance graph, de Bruijn-Erdos, topology, compact spaces, finite intersection property, Tychonoff theorem, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "A number that's bigger than zero but smaller than every positive real"
+    caption: "c is bigger than zero but smaller than one, one half, one third, and so on forever. No real number does that. Logic builds a number system where one does."
+    hashtags: "#math #logic #infinitesimals #calculus"
+    cover:
+      at: 50.0
+      text: Below every 1/n, above 0
+  short2:
+    title: "Coloring the points of the plane"
+    caption: "Color the plane so that points exactly one unit apart never match. Seven colors are enough, and four aren't. Nobody knows the answer."
+    hashtags: "#math #GraphTheory #Combinatorics #logic"
+    cover:
+      at: 27.0
+      text: How many colors?
