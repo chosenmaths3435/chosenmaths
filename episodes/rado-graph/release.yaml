@@ -1,0 +1,14 @@
+# Release plan written by scripts/schedule_release.py, read by scripts/release_due.py.
+# Times are UTC. YouTube publishes on its own schedule. Once each time has passed the
+# job does the rest: at the first time it pushes `push` (a commit, or main), and at
+# each short it posts to every platform in `platforms` that published.yaml lacks.
+push: main
+platforms:
+- instagram
+- facebook
+- threads
+- bluesky
+at:
+  long: '2026-11-13T20:00:00Z'
+  short1: '2026-11-13T20:15:00Z'
+  short2: '2026-11-14T20:00:00Z'
