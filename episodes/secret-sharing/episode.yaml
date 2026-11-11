@@ -1,0 +1,6 @@
+slug: secret-sharing
+title: Split a secret so any three can open it
+status: publish       # script -> animate -> finish -> publish -> published
+length_target_min: 7
+coauthors: []
+shorts: [short1, short2]

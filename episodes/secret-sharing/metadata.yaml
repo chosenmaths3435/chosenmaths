@@ -1,0 +1,41 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Split a secret so any 3 can open it and 2 learn nothing"
+  title_alternatives:
+    - "Shamir's secret sharing: two points make a line"
+    - "How to hide a secret in a parabola (Shamir's Secret Sharing)"
+  description: |
+    A vault code is split among five managers. Any three of them can open it, but any two together learn nothing at all, not even whether the code is even. The trick is something you learned in school: two points make a line.
+    We start with the easy case, where everyone is needed, and see why splitting the secret separately for every group blows up. Then the secret becomes the height where a random line crosses the vertical axis. Two points pin the line down, and one point fits every possible secret. For any three of five, use a parabola; for any k people, a polynomial of degree k minus one.
+    With ordinary numbers a single point still leaks a little, because you can't pick a slope fairly from all the real numbers. Doing the arithmetic on a dial with a prime number of positions fixes that, and we see why the number of positions has to be prime. Then two ways to get it wrong, and how the same polynomials catch a manager who lies about their share.
+    Adi Shamir published this scheme in 1979. George Blakley found a different one, using planes in space, the same year.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #Math #Cryptography #Polynomials #SecretSharing #Algebra #Shamir
+  tags: [secret sharing, Shamir secret sharing, Adi Shamir, threshold cryptography, cryptography, polynomial interpolation, Lagrange interpolation, two points make a line, parabola, finite fields, modular arithmetic, prime numbers, perfect secrecy, Reed-Solomon codes, error correction, QR codes, RSA, Blakley, math, algebra]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "Two points make a line, so you can split a secret"
+    caption: "Split a secret among five people so any two can open it, but one alone learns nothing. All it takes is the fact that two points make a line."
+    hashtags: "#math #cryptography #algebra #geometry"
+    cover:
+      at: 33.0
+      text: One point fits every secret
+  short2:
+    title: "Any 3 can open the vault, any 2 learn nothing"
+    caption: "Five managers, one vault code. Any three can open it. Any two together learn nothing, not even whether it's even."
+    hashtags: "#math #cryptography #polynomials #algebra"
+    cover:
+      at: 33.0
+      text: Two points, every code fits
