@@ -1,0 +1,47 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Most strings can't be compressed (Kolmogorov Complexity)"
+  title_alternatives:
+    - "Almost every string is random. Name one."
+    - "Why every compressor makes some files bigger"
+  description: |
+    Every compression program like zip makes some files bigger. It's not a bug: there just aren't enough short files to go around. That counting argument is the start of Kolmogorov complexity, where the complexity of a string is the length of the shortest program that prints it.
+    Counting programs shows that almost every string is random, with no description much shorter than itself. The compressible strings are the ones that follow a rule picking out only a few strings, like palindromes, and that is how real compressors win. Then the Berry paradox, "the smallest number that cannot be described in under sixty letters", turns into a proof that no program can compute the complexity of a string.
+    Finally, Chaitin's incompleteness theorem: for any fixed axioms there is a bound, about the size of the axioms, past which no specific string can be proven random, even though all but finitely many strings are past it.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #KolmogorovComplexity #Compression #Randomness #Computability #Incompleteness #ComputerScience #Math
+  tags: [Kolmogorov complexity, descriptive complexity, algorithmic information theory, compression, data compression, lossless compression, zip, randomness, random strings, incompressible strings, pigeonhole principle, counting argument, palindromes, halting problem, uncomputable, Berry paradox, Chaitin, Chaitin incompleteness theorem, Godel incompleteness, computability, math, computer science]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "Why every compressor makes some files bigger"
+    caption: "Every compression program like zip makes some files bigger. It's not a bug: there just aren't enough short files to go around."
+    hashtags: "#math #ComputerScience #compression #counting"
+    cover:
+      at: 35.0
+      text: Not enough short files
+  short2:
+    title: "The Berry paradox, turned into a program"
+    caption: "The smallest number that cannot be described in under sixty letters. I just described it, in under sixty letters. Swap words for programs and the paradox becomes a theorem."
+    hashtags: "#math #ComputerScience #paradox #logic"
+    cover:
+      at: 25.0
+      text: A paradox becomes a proof
+  short3:
+    title: "You can never prove a string is random"
+    caption: "Flip a coin a million times. The string you get is almost surely random, and with the usual axioms of math you'll never prove it."
+    hashtags: "#math #logic #ComputerScience #randomness"
+    cover:
+      at: 8.0
+      text: Random, but unprovable

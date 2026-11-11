@@ -1,0 +1,41 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "There's only one random graph"
+  title_alternatives:
+    - "Flip a coin for every edge, and you always get the same infinite graph"
+    - "The Rado graph: why every infinite random graph is the same"
+  description: |
+    Flip a coin for every pair of dots: heads, connect them, tails, don't. Do it with infinitely many dots, and with probability one you and I build the exact same network.
+    The reason is a property we call granting wishes: for any few dots colored green and red, some other dot is joined to every green one and to no red one. Coin flips grant every wish, and a back-and-forth matching shows that any two graphs that grant every wish are the same graph. So there is really only one random graph, the Rado graph.
+    It has strange properties: flip every connection and you get it back, and every finite graph sits inside it. You can even build it without coins, from binary digits. And it explains the zero-one law: any first-order statement about graphs is almost always true or almost always false in big random graphs, and the random graph tells you which.
+    Paul Erdos and Alfred Renyi proved the coin-flip result in 1963, and Richard Rado gave the binary construction in 1964. The zero-one law is due to Glebskii, Kogan, Liogon'kii and Talanov (1969) and, independently, Fagin (1976).
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #Math #GraphTheory #Probability #Logic #ModelTheory #RandomGraphs
+  tags: [random graph, Rado graph, Erdos-Renyi, countable random graph, extension property, back and forth, isomorphism, graph theory, probability, zero-one law, first-order logic, model theory, compactness theorem, Paley graph, binary, infinite graphs, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "There's only one infinite random graph"
+    caption: "Flip a coin for every pair of dots: heads, connect them. Do it forever, and you and I build the exact same network, with probability one."
+    hashtags: "#math #GraphTheory #probability #logic"
+    cover:
+      at: 11.5
+      text: Only one random graph
+  short2:
+    title: "A random graph with no coins"
+    caption: "Join a smaller number k to a bigger one when the bigger one has a 1 in binary position k. This orderly rule builds the same network as flipping a coin for every pair of dots."
+    hashtags: "#math #GraphTheory #binary #logic"
+    cover:
+      at: 20.5
+      text: A random graph, no coins
