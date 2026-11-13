@@ -1,0 +1,48 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "The function no for-loop can compute (The Ackermann Function)"
+  title_alternatives:
+    - "Too big for any for-loop: the Ackermann function"
+    - "Addition, multiplication, powers... what comes next?"
+  description: |
+    Addition is repeated counting, multiplication is repeated addition, and powers are repeated multiplication. Keep going and you get the Ackermann function, defined by three short rules. A(4, 2) already has 19,729 digits, and A(4, 3) has more digits than there are atoms in the universe.
+    Programs built only from bounded loops, loops that fix their count before they start, compute almost everything you would ever want: factorials, primes, the n-th prime. These are the primitive recursive functions, and every one of them always stops. But each loop only climbs about one row of the Ackermann table, so walking the table diagonally outruns every such program. The Ackermann function is computable and always stops, yet no bounded-loop program computes it.
+    Then: why it always stops (a countdown in dictionary order), how loops that build functions get it back, and why every language where all programs stop, and a computer can list and run them, must miss some computable function.
+    The two-argument version here is due to Rozsa Peter and Raphael Robinson, after Wilhelm Ackermann's 1928 original. Loops over functions are the idea behind Godel's System T.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #AckermannFunction #Computability #Recursion #ComputerScience #Programming #Math
+  tags: [Ackermann function, primitive recursive functions, primitive recursion, bounded loops, for loops, LOOP language, computability, recursion, fast growing functions, tetration, power towers, diagonal argument, diagonalization, termination, lexicographic order, Godel System T, halting problem, total functions, theory of computation, computer science, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "The function no for-loop can compute"
+    caption: "Addition is repeated counting, multiplication is repeated addition, powers are repeated multiplication. Keep going and you get a function no for-loop program can compute."
+    hashtags: "#math #ComputerScience #recursion #programming"
+    cover:
+      at: 23.0
+      text: Too big for any for-loop
+  short2:
+    title: "Why the Ackermann function always stops"
+    caption: "Its answers have more digits than there are atoms in the universe. So does it always stop? A countdown on two dials says yes."
+    hashtags: "#math #ComputerScience #recursion #programming"
+    cover:
+      at: 31.0
+      text: A countdown that always ends
+  short3:
+    title: "Every safe programming language is missing something"
+    caption: "Take any programming language where every program is guaranteed to stop, and a computer can list and run its programs. There's a computable function it can never express."
+    hashtags: "#math #ComputerScience #programming #logic"
+    cover:
+      at: 31.0
+      text: Always stops, always incomplete

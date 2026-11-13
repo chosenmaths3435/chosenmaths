@@ -1,0 +1,41 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Continuous at every irrational, broken at every fraction"
+  title_alternatives:
+    - "The popcorn function, and the function that can't exist"
+    - "Why no function is continuous only at the fractions"
+  description: |
+    There's a function that's continuous at every irrational number and broken at every fraction. Try to build the opposite. You can't.
+    The popcorn function sends a fraction p/q in lowest terms to 1/q and every irrational number to 0. Near a fraction, irrationals sit at zero right next to it, so the graph breaks there. Near an irrational, only fractions with huge denominators survive, and those have tiny values, so the graph is continuous there.
+    Then the reverse: no function is continuous at every fraction and broken at every irrational. List the fractions, and run a countdown of shrinking intervals that leaves out one fraction at each step. The point they close in on is irrational, and the function is continuous there. This countdown is the heart of the Baire category theorem.
+    The popcorn function is also called Thomae's function, after Carl Johannes Thomae, who described it in 1875.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #Math #RealAnalysis #Calculus #Continuity #ThomaeFunction
+  tags: [popcorn function, Thomae's function, continuity, continuous function, real analysis, irrational numbers, rational numbers, fractions, epsilon delta, nested intervals, Baire category theorem, countable sets, discontinuity, calculus, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "A function broken at every fraction, continuous everywhere else"
+    caption: "This function is broken at every fraction, and continuous at every irrational number. The rule fits in one line."
+    hashtags: "#math #RealAnalysis #calculus #continuity"
+    cover:
+      at: 5.5
+      text: Broken at every fraction
+  short2:
+    title: "No function is continuous only at the fractions"
+    caption: "Can a function be continuous at every fraction, but broken at every irrational? No. A countdown of shrinking intervals catches it."
+    hashtags: "#math #RealAnalysis #proof #continuity"
+    cover:
+      at: 41.0
+      text: A countdown that never misses
