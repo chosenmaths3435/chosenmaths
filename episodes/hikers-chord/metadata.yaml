@@ -1,0 +1,40 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Two opposite points on the equator have the same temperature"
+  title_alternatives:
+    - "Same height, half a loop apart (the universal chord theorem)"
+    - "Why a rod 2/5 of a trail long might never fit"
+  description: |
+    Right now, two opposite points on the equator have exactly the same temperature. The reason fits on a hiking trail.
+    Walk a loop trail and track one number: the height half a loop ahead, minus the height where you are. After half a loop, the two spots swap, so the number flips sign, and by the intermediate value theorem it hits zero somewhere. That gives two spots half a loop apart at the same height, and the same argument works around the equator. On the whole globe, the Borsuk-Ulam theorem gives two opposite points with the same temperature and the same air pressure.
+    On a loop, every distance works, not just half. But cut the loop open into a trail that starts and ends at the same height, and only distances of one over a whole number are guaranteed. Paul Levy showed in 1934 that every other length, like two fifths of the trail, can fail.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #Math #Calculus #IntermediateValueTheorem #Topology #BorsukUlam #Analysis
+  tags: [universal chord theorem, intermediate value theorem, horizontal chord theorem, Paul Levy, Borsuk-Ulam theorem, antipodal points, equator temperature, hiking, continuous functions, periodic functions, calculus, real analysis, topology, Rolle's theorem, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "Same temperature, opposite sides of the Earth"
+    caption: "Right now, two opposite points on the equator have exactly the same temperature. The reason fits on a hiking trail."
+    hashtags: "#math #calculus #topology #geography"
+    cover:
+      at: 34.0
+      text: Half a loop apart
+  short2:
+    title: "Half a trail always works. Two fifths can fail."
+    caption: "On any trail that starts and ends at the same height, two spots half the trail apart are at the same height. A third, a quarter: always. Two fifths? Not always."
+    hashtags: "#math #calculus #analysis #puzzle"
+    cover:
+      at: 40.0
+      text: Never level

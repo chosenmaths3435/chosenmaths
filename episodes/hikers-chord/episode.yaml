@@ -1,0 +1,6 @@
+slug: hikers-chord
+title: Same height, half a loop apart
+status: publish       # script -> animate -> finish -> publish -> published
+length_target_min: 5
+coauthors: []
+shorts: [short1, short2]
