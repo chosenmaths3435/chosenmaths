@@ -2,6 +2,30 @@
   item: short1
   id: QaR9egg3ZD4
   url: https://youtu.be/QaR9egg3ZD4
-  state: scheduled
+  state: public
   at: '2026-11-10T04:00:45+00:00'
   publish_at: '2026-11-11T05:00:00Z'
+- platform: instagram
+  item: short1
+  state: public
+  id: '18183965038429539'
+  url: https://www.instagram.com/reel/DflriZBhIlY/
+  at: '2026-11-11T05:00:59+00:00'
+- platform: facebook
+  item: short1
+  state: public
+  id: '2184736875446684'
+  url: https://www.facebook.com/reel/2184736875446684
+  at: '2026-11-11T05:01:11+00:00'
+- platform: threads
+  item: short1
+  state: public
+  id: '18377517244240640'
+  url: https://www.threads.com/@chosenmaths3435/post/Dflrp-oTGe_
+  at: '2026-11-11T05:02:04+00:00'
+- platform: bluesky
+  item: short1
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3mzz6gg62j22q
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3mzz6gg62j22q
+  at: '2026-11-11T05:02:07+00:00'
