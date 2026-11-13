@@ -2,23 +2,95 @@
   item: long
   id: YZnMMqxMhjc
   url: https://youtu.be/YZnMMqxMhjc
-  state: private
+  state: public
   at: '2026-11-10T02:38:32+00:00'
 - platform: youtube
   item: short1
   id: Yx5A-J6dCi4
   url: https://youtu.be/Yx5A-J6dCi4
-  state: private
+  state: public
   at: '2026-11-10T02:38:49+00:00'
 - platform: youtube
   item: short2
   id: QiOAb_hXnhk
   url: https://youtu.be/QiOAb_hXnhk
-  state: private
+  state: public
   at: '2026-11-10T02:38:52+00:00'
 - platform: youtube
   item: short3
   id: r8ANr43ygbE
   url: https://youtu.be/r8ANr43ygbE
-  state: private
+  state: public
   at: '2026-11-10T02:38:55+00:00'
+- platform: instagram
+  item: short1
+  state: public
+  id: '17979432333131509'
+  url: https://www.instagram.com/reel/Dfkm3gOTHe9/
+  at: '2026-11-10T19:01:02+00:00'
+- platform: facebook
+  item: short1
+  state: public
+  id: '1114583074546820'
+  url: https://www.facebook.com/reel/1114583074546820
+  at: '2026-11-10T19:01:13+00:00'
+- platform: threads
+  item: short1
+  state: public
+  id: '18106165502009934'
+  url: https://www.threads.com/@chosenmaths3435/post/Dfkm_tQhMGM
+  at: '2026-11-10T19:01:53+00:00'
+- platform: bluesky
+  item: short1
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3mzy4v72tep2c
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3mzy4v72tep2c
+  at: '2026-11-10T19:01:56+00:00'
+- platform: instagram
+  item: short2
+  state: public
+  id: '18026808278940756'
+  url: https://www.instagram.com/reel/DfnEyg3viY8/
+  at: '2026-11-11T18:00:59+00:00'
+- platform: facebook
+  item: short2
+  state: public
+  id: '2089348768385035'
+  url: https://www.facebook.com/reel/2089348768385035
+  at: '2026-11-11T18:01:11+00:00'
+- platform: threads
+  item: short2
+  state: public
+  id: '17933690835161696'
+  url: https://www.threads.com/@chosenmaths3435/post/DfnE63ZB6-Y
+  at: '2026-11-11T18:02:07+00:00'
+- platform: bluesky
+  item: short2
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3n22jzats5t2k
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3n22jzats5t2k
+  at: '2026-11-11T18:02:10+00:00'
+- platform: instagram
+  item: short3
+  state: public
+  id: '18212488576369666'
+  url: https://www.instagram.com/reel/DfqjFKrhh1Y/
+  at: '2026-11-13T02:23:58+00:00'
+- platform: facebook
+  item: short3
+  state: public
+  id: '1123545493746826'
+  url: https://www.facebook.com/reel/1123545493746826
+  at: '2026-11-13T02:24:09+00:00'
+- platform: threads
+  item: short3
+  state: public
+  id: '18120959017992733'
+  url: https://www.threads.com/@chosenmaths3435/post/DfqjRiMyIUB
+  at: '2026-11-13T02:25:01+00:00'
+- platform: bluesky
+  item: short3
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3n25wlhriql2q
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3n25wlhriql2q
+  at: '2026-11-13T02:25:05+00:00'
