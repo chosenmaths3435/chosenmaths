@@ -99,6 +99,15 @@ def mark_scheduled(slug, times):
     path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True))
 
 
+def warn_not_embeddable(ids):
+    """The API ignores embeddable on this channel (2026-11-12); Studio's bulk edit works."""
+    from post_youtube import client
+    r = client().videos().list(part="status", id=",".join(ids.values())).execute()
+    off = [v["id"] for v in r["items"] if not v["status"].get("embeddable")]
+    if off:
+        print("embedding is off; turn it on in Studio (Content, select, Edit, Embedding): " + " ".join(off))
+
+
 def iso(t):
     return t.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -171,6 +180,7 @@ def main():
     for item in items:
         print(sh("uv", "run", "scripts/post_youtube.py", "publish", "--at", iso(times[item]), "--", ids[item]))
     mark_scheduled(a.slug, times)
+    warn_not_embeddable(ids)
 
     plan = {"push": "main", "platforms": PLATFORMS, "at": {k: iso(v) for k, v in times.items()}}
     header = ("# Release plan written by scripts/schedule_release.py, read by scripts/release_due.py.\n"

@@ -61,7 +61,7 @@ def body_for(p):
     # (support.google.com/youtube/answer/14328491), so the flag stays off unless the
     # payload says otherwise via youtube_synthetic.
     status = {"privacyStatus": "private", "selfDeclaredMadeForKids": bool(p.get("made_for_kids", False)),
-              "containsSyntheticMedia": bool(p.get("youtube_synthetic", False))}
+              "containsSyntheticMedia": bool(p.get("youtube_synthetic", False)), "embeddable": True}
     return {"snippet": snippet, "status": status}
 
 
@@ -115,6 +115,8 @@ def publish(video_id, at):
     status = {"privacyStatus": "private" if at else "public",
               "selfDeclaredMadeForKids": cur.get("selfDeclaredMadeForKids", False),
               "containsSyntheticMedia": cur.get("containsSyntheticMedia", False)}
+    # An update replaces the whole status, so carry over what we don't mean to change.
+    status.update({k: cur[k] for k in ("embeddable", "license", "publicStatsViewable") if k in cur})
     if at:
         status["publishAt"] = at
     yt.videos().update(part="status", body={"id": video_id, "status": status}).execute()
