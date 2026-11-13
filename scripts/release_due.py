@@ -141,9 +141,25 @@ def post_cmd(platform, payload, repo, slug, item):
 
 
 def is_public_on_youtube(video_id):
-    r = requests.get("https://www.youtube.com/oembed",
-                     params={"url": f"https://youtu.be/{video_id}", "format": "json"}, timeout=30)
-    return r.status_code == 200  # private and scheduled videos return 401/403
+    # Ask the API: oEmbed answers 401 for any video with embedding off, public or not.
+    # No browser login here (the timer has nobody to click it); a bad token just waits.
+    from google.auth.exceptions import RefreshError
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
+
+    token = Path.home() / ".config" / "math-videos" / "youtube_token.json"
+    try:
+        creds = Credentials.from_authorized_user_file(token)
+        if creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        r = build("youtube", "v3", credentials=creds, cache_discovery=False).videos().list(
+            part="status", id=video_id).execute()
+    except (OSError, ValueError, RefreshError) as e:
+        log(f"could not check YouTube status of {video_id}: {e}")
+        return False
+    items = r.get("items", [])
+    return bool(items) and items[0]["status"]["privacyStatus"] == "public"
 
 
 def check_accounts(dry):
