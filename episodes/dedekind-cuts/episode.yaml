@@ -1,6 +1,6 @@
 slug: dedekind-cuts
 title: The real numbers are just an order
-status: publish       # script -> animate -> finish -> publish -> published
+status: published       # script -> animate -> finish -> publish -> published
 length_target_min: 12
 coauthors: []
 shorts: [short1, short2, short3]
