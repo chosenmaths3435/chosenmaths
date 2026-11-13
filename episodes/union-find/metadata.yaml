@@ -1,0 +1,49 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Every equivalence relation is equality in disguise (Union-Find)"
+  title_alternatives:
+    - "Equality in disguise: equivalence relations and union-find"
+    - "A running time that's at most 4, but not constant"
+  description: |
+    "Listen" and "silent" are anagrams. Sort the letters and both become the same string, so "is an anagram of" turns into plain equals. That works for every equivalence relation: a rule is reflexive, symmetric and transitive exactly when there is a function f with x ~ y if and only if f(x) = f(y).
+    The proof sends each x to its equivalence class, but there is often a far better choice. Clock times: the remainder mod 12. Finite-dimensional vector spaces up to isomorphism: the dimension.
+    To keep track of an equivalence relation on a computer, it is enough to compute some f fast. A disjoint set forest (union-find) lets each group pick a representative and stores pointers toward it. Union by rank keeps every tree at most log2 n tall. Path compression points every node a search passes straight at the root. Together, m operations on n items take time at most proportional to m times alpha(n), where alpha is the inverse Ackermann function: at most 4 for any input that could ever exist, but still not constant.
+    We sketch the easier m log* n bound of Hopcroft and Ullman (1973), and state Tarjan's alpha(n) bound (1975) and the matching lower bound of Fredman and Saks (1989), which holds for any union-find structure in the cell-probe model.
+    A note for the precise: the tight bound is in terms of the two-argument alpha(m, n). The m alpha(n) bound in the video is a valid upper bound, and it is tight when m is not much larger than n.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #UnionFind #DataStructures #Algorithms #EquivalenceRelations #ComputerScience #Math
+  tags: [union find, disjoint set union, disjoint set forest, DSU, equivalence relation, equivalence class, quotient, kernel of a function, union by rank, path compression, inverse Ackermann function, Ackermann function, amortized analysis, log star, Tarjan, Hopcroft Ullman, Fredman Saks, data structures, algorithms, dimension, vector spaces, isomorphism, graph isomorphism, computer science, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "Every kind of \"the same\" is equality in disguise"
+    caption: "\"Listen\" and \"silent\" are anagrams. Sort the letters and they become the same string. Every kind of sameness works like that."
+    hashtags: "#math #EquivalenceRelations #algebra #proof"
+    cover:
+      at: 30.0
+      text: Equality in disguise
+  short2:
+    title: "Why union-find trees stay short"
+    caption: "A data structure whose trees can never get tall, and the reason fits in one line of math."
+    hashtags: "#math #ComputerScience #DataStructures #algorithms"
+    cover:
+      at: 40.0
+      text: Trees that stay short
+  short3:
+    title: "A running time that's at most 4, but not constant"
+    caption: "Union-find runs in inverse Ackermann time: at most 4 for any input that could ever exist, and still not a constant."
+    hashtags: "#math #ComputerScience #algorithms #DataStructures"
+    cover:
+      at: 48.0
+      text: At most 4, never constant
