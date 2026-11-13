@@ -169,7 +169,7 @@ def main():
             print(uploaded_line(out))
     ids = youtube_ids(a.slug)
     for item in items:
-        print(sh("uv", "run", "scripts/post_youtube.py", "publish", ids[item], "--at", iso(times[item])))
+        print(sh("uv", "run", "scripts/post_youtube.py", "publish", "--at", iso(times[item]), "--", ids[item]))
     mark_scheduled(a.slug, times)
 
     plan = {"push": "main", "platforms": PLATFORMS, "at": {k: iso(v) for k, v in times.items()}}
