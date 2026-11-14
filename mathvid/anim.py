@@ -63,3 +63,25 @@ def morph_parts(scene, src, dst, pairs, run_time=1.0, extra=()):
     scene.remove(src, *src.submobjects, *temps, *dst.submobjects)
     scene.add(dst)
     return dst
+
+
+def elapsed(tracker) -> float:
+    """Seconds of this beat's narration already played."""
+    return tracker.duration - tracker.get_remaining_duration()
+
+
+def wait_frac(scene, tracker, f: float) -> None:
+    """Hold until fraction f of this beat's narration has passed."""
+    t = f * tracker.duration - elapsed(tracker)
+    if t > 0.05:
+        scene.wait(t)
+
+
+def clear(scene, run_time=0.5, keep=()) -> None:
+    """Fade out everything on screen except `keep` (updaters are stopped first)."""
+    for m in scene.mobjects:
+        for s in m.get_family():
+            s.clear_updaters()
+    gone = [m for m in scene.mobjects if m not in keep]
+    if gone:
+        scene.play(*[FadeOut(m) for m in gone], run_time=run_time)

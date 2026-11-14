@@ -43,7 +43,8 @@ def duration(path):
 
 
 def scene_classes(py, prefix):
-    return re.findall(rf"^class ({prefix}\w*)\(", py.read_text(), re.M)
+    # Only S01Hook-style and Short1Name-style classes; helper classes may start with S too.
+    return re.findall(rf"^class ({prefix}\d+\w*)\(", py.read_text(), re.M)
 
 
 def scene_names(script_md):
