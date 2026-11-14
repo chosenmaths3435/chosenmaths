@@ -9,7 +9,7 @@ from manim_voiceover import VoiceoverScene
 
 from mathvid import layout  # noqa: F401  must come before scene code runs
 from mathvid.anim import rest, wait_until
-from mathvid.automata import glow_dot
+from mathvid.automata import _text_of, glow_dot
 from mathvid.layout import FW, SAFE_BOTTOM, SAFE_TOP
 from mathvid.orders import cross, tick
 from mathvid.script import Script
@@ -116,20 +116,17 @@ class Short2DigitSum(VoiceoverScene):
         num = digit_row("4812", size=120).move_to([0, NUM_Y, 0])
         sub = text("divisible by 3?", size=50, color=MUTED).move_to([0, SUB_Y, 0])
         with self.voiceover(text=N("short2.b1")) as tr:
-            self.play(FadeIn(num), FadeIn(sub), run_time=0.6)
-            wait_frac(self, tr, 0.3)
-            self.play(FadeIn(m.node_layer), FadeIn(m.start), run_time=0.8)
+            # The whole diagram is up from the first frame; the narration then points at
+            # each group of arrows instead of drawing it.
+            self.add(num, sub, m.node_layer, m.start,
+                     *[VGroup(e.arrow, e.label) for e in (*m.one, *m.two, *m.loops)])
             wait_frac(self, tr, 0.5)
             self.play(*[Indicate(m.nodes[q], color=PRIMARY) for q in range(3)], run_time=1.0)
-            wait_until(self, tr, "one")
-            self.play(Create(VGroup(*[e.arrow for e in m.one])),
-                      FadeIn(VGroup(*[e.label for e in m.one])), run_time=0.9)
-            wait_until(self, tr, "two")
-            self.play(Create(VGroup(*[e.arrow for e in m.two])),
-                      FadeIn(VGroup(*[e.label for e in m.two])), run_time=0.9)
-            wait_until(self, tr, "loop")
-            self.play(Create(VGroup(*[e.arrow for e in m.loops])),
-                      FadeIn(VGroup(*[e.label for e in m.loops])), run_time=0.9)
+            for mark, group in (("one", m.one), ("two", m.two), ("loop", m.loops)):
+                wait_until(self, tr, mark)
+                # Only the label's text: its background box would flash solid.
+                self.play(Indicate(VGroup(*[VGroup(e.arrow, _text_of(e.label)) for e in group]),
+                                   color=PRIMARY, scale_factor=1.08), run_time=0.9)
             rest(self, tr)
 
         with self.voiceover(text=N("short2.b2")) as tr:
