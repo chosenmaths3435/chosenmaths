@@ -1,0 +1,48 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "Can a program print itself? (Quines and the Recursion Theorem)"
+  title_alternatives:
+    - "A program that prints its own source code, and why that's a theorem"
+    - "How to write a program that prints itself"
+  description: |
+    Can a program print its own source code, without reading its own file? The obvious attempt never ends: to print itself, a program would have to contain a copy of itself, and that copy another copy, and so on.
+    The way out is an old trick from language: "Print two copies of the following, the second one in quotes:" followed by that same phrase in quotes. One half is data, the other half is instructions that use the data twice. The same split gives a program SELF = A B, where A writes out the text of B, and B rebuilds A from it. A depends on B, but B never mentions A, so there is no infinite regress.
+    The construction works in any programming language; here it is in Python. A relational interpreter written in miniKanren finds the same kind of program on its own: ask it for an expression whose value is itself, and it returns the classic Lisp quine.
+    Replace "print" with any program T and you get the recursion theorem: every program can be written as if it could read its own source code. As an application, no program can list all the shortest programs. The same trick builds Godel's sentence that says it has no proof.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #Quine #RecursionTheorem #ComputerScience #TheoryOfComputation #SelfReference #Math
+  tags: [quine, self-reproducing program, program that prints itself, recursion theorem, Kleene recursion theorem, self-reference, Python quine, Lisp quine, miniKanren, relational programming, relational interpreter, program synthesis, computability, theory of computation, Kolmogorov complexity, shortest program, Douglas Hofstadter, W. V. Quine, Godel, computer science, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "A program that prints its own source code"
+    caption: "Can a program print its own source code without reading its own file? Here's one in Python, and the old trick from language that makes it work."
+    hashtags: "#math #programming #Python #ComputerScience"
+    cover:
+      at: 40.0
+      text: A program that prints itself
+  short2:
+    title: "Running an interpreter backwards"
+    caption: "Write an interpreter as a relation instead of a function, and you can run it backwards. Ask it for an expression whose value is itself, and it finds one."
+    hashtags: "#math #programming #ComputerScience #miniKanren"
+    cover:
+      at: 44.0
+      text: A quine, found by search
+  short3:
+    title: "No program can list every shortest program"
+    caption: "Call a program shortest if nothing shorter does the same thing. No program can list them all, and the proof is a program that reads its own source code."
+    hashtags: "#math #ComputerScience #TheoryOfComputation #proof"
+    cover:
+      at: 55.0
+      text: You can't list them all
