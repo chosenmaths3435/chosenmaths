@@ -26,6 +26,7 @@ import fcntl
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import re
@@ -100,9 +101,17 @@ def push(sha, repo, dry):
     if dry:
         log(f"would push {sha} to {repo} main")
         return True
-    r = run(["git", "-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential",
-             "push", url, f"{full}:refs/heads/main"], dry)
-    return r.returncode == 0
+    # Right after boot the timer can fire before the keyring that holds gh's token is up,
+    # and git then fails with "could not read Username". Give it a couple of minutes.
+    for attempt in range(4):
+        if attempt:
+            log(f"push failed; retrying in 45s (attempt {attempt + 1} of 4)")
+            time.sleep(45)
+        r = run(["git", "-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential",
+                 "push", url, f"{full}:refs/heads/main"], dry)
+        if r.returncode == 0:
+            return True
+    return False
 
 
 def ensure_release(slug, title, item, repo, dry):
