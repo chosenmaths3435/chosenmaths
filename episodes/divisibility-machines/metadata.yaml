@@ -1,0 +1,48 @@
+# Upload metadata. The publish step reads this; edit freely.
+# {chapters} and {repo_url} are filled in at publish time. Short captions are the hook,
+# then a link to the long-form video (added at publish time), then the hashtags.
+# Descriptions keep line breaks as written: one line per paragraph.
+
+long:
+  title: "A divisibility test for any number (Finite State Machines)"
+  title_alternatives:
+    - "Why adding the digits tests for 3, and what the test for 7 looks like"
+    - "Seven dots that check divisibility by 7"
+  description: |
+    To test for 3 you add the digits, and to test for 5 you look at the last digit. What is the test for 7? A small diagram works for any number n: n dots, one for each remainder, and an arrow for each digit from r to the remainder of 10r + d. Start at 0, follow the digits, and the dot you end on is the remainder.
+    For 3 the diagram is the digit-sum rule, because 10 leaves remainder 1. For 5 it forgets everything but the last digit. For 7 the rule is "triple, add the digit, keep the remainder", and for 11 the machine rediscovers the alternating-sum test.
+    These diagrams are finite state machines: a fixed set of states, one symbol read at a time, and an answer decided by the state you end in. The inputs a machine accepts form its language, and the languages some finite state machine can recognize are called regular.
+    What can't they do? Checking balanced parentheses. A pigeonhole argument shows that any machine with k states mistakes two inputs it should tell apart, so no finite state machine works.
+
+    {chapters}
+
+    Animation source and script: {repo_url}
+
+    #FiniteStateMachines #DivisibilityRules #NumberTheory #ComputerScience #TheoryOfComputation #Math
+  tags: [divisibility test, divisibility rules, divisibility by 7, divisibility by 3, divisibility by 11, digit sum, alternating sum, remainders, modular arithmetic, finite state machine, finite automaton, DFA, deterministic finite automaton, regular language, automata theory, theory of computation, balanced parentheses, pigeonhole principle, "1729", number theory, computer science, math]
+  category: Education
+  made_for_kids: false
+  ai_disclosure: true
+
+shorts:
+  short1:
+    title: "A divisibility test for 7"
+    caption: "Seven dots and a few arrows: a test for divisibility by 7 that never has to remember the number."
+    hashtags: "#math #NumberTheory #divisibility #ComputerScience"
+    cover:
+      at: 26.0
+      text: A test for 7
+  short2:
+    title: "Why adding the digits tests for 3"
+    caption: "Add up the digits to check divisibility by 3. Here's the machine behind that rule, and why it works."
+    hashtags: "#math #NumberTheory #divisibility #mathfacts"
+    cover:
+      at: 31.0
+      text: Why the digit sum works
+  short3:
+    title: "No finite machine can check parentheses"
+    caption: "A machine with finitely many states can't check that parentheses are balanced, and the proof is the pigeonhole principle."
+    hashtags: "#math #ComputerScience #TheoryOfComputation #proof"
+    cover:
+      at: 41.5
+      text: A finite machine's limit

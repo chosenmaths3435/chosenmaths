@@ -1,6 +1,6 @@
 slug: divisibility-machines
 title: A divisibility test for any number
-status: finish        # script -> animate -> finish -> publish -> published
+status: publish       # script -> animate -> finish -> publish -> published
 length_target_min: 6
 coauthors: []
 shorts: [short1, short2, short3]

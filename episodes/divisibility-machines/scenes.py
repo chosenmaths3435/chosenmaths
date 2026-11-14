@@ -170,7 +170,7 @@ def paren_pair(size=72):
     return good, bad
 
 
-class StateBox(VGroup):
+class ParenBox(VGroup):
     """A machine seen from outside: a box with k dots in it."""
 
     def __init__(self, cols=3, rows=2, w=4.6, h=3.4, k_label="k states", size=34):
@@ -603,7 +603,7 @@ class S05WhatTheyCant(VoiceoverScene):
             self.play(Create(tk), Create(cr), run_time=0.6)
             rest(self, tr)
 
-        box = StateBox().move_to([2.9, -0.3, 0])
+        box = ParenBox().move_to([2.9, -0.3, 0])
         strs = paren_strings(7, size=40).arrange(DOWN, buff=0.28, aligned_edge=LEFT).move_to([-4.2, -0.4, 0])
         slab = text("k + 1 inputs", size=34, color=MUTED).next_to(strs, UP, buff=0.35)
         with self.voiceover(text=N("s05.b3")) as tr:
