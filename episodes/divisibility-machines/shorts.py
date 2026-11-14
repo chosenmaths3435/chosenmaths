@@ -21,7 +21,7 @@ from scenes import (  # noqa: E402
     I_IDX,
     J_IDX,
     LAND,
-    StateBox,
+    ParenBox,
     clear,
     digit_row,
     feed_strings,
@@ -179,8 +179,8 @@ class Short3Parentheses(VoiceoverScene):
             self.play(Create(tk), Create(cr), run_time=0.5)
             rest(self, tr)
 
-        box = StateBox(w=6.4, h=2.4, size=40).move_to([0, 3.75, 0])
-        strs = paren_strings(7, size=42).arrange(DOWN, buff=0.18, aligned_edge=LEFT).move_to([-1.6, -0.85, 0])
+        box = ParenBox(w=6.4, h=2.4, size=40).move_to([0, 3.75, 0])
+        strs = paren_strings(7, size=42).arrange(DOWN, buff=0.16, aligned_edge=LEFT).move_to([-1.6, -0.55, 0])
         slab = text("k + 1 inputs", size=40, color=MUTED).move_to([1.6, 0.6, 0])
         with self.voiceover(text=N("short3.b2")) as tr:
             self.play(FadeOut(VGroup(good, bad, tk, cr)), run_time=0.4)
