@@ -2,20 +2,74 @@
   item: long
   id: Tz3yJzEmds8
   url: https://youtu.be/Tz3yJzEmds8
-  state: scheduled
+  state: public
   at: '2026-11-13T02:36:56+00:00'
   publish_at: '2026-11-20T20:00:00Z'
 - platform: youtube
   item: short1
   id: m654NrPAKhY
   url: https://youtu.be/m654NrPAKhY
-  state: scheduled
+  state: public
   at: '2026-11-13T02:37:00+00:00'
   publish_at: '2026-11-20T20:15:00Z'
 - platform: youtube
   item: short2
   id: 3OOWrKcsamA
   url: https://youtu.be/3OOWrKcsamA
-  state: scheduled
+  state: public
   at: '2026-11-13T02:37:03+00:00'
   publish_at: '2026-11-21T20:00:00Z'
+- platform: instagram
+  item: short1
+  state: public
+  id: '18105015653345004'
+  url: https://www.instagram.com/reel/Df-ki8HBHE8/
+  at: '2026-11-20T21:00:56+00:00'
+- platform: facebook
+  item: short1
+  state: public
+  id: '1162964896078539'
+  url: https://www.facebook.com/reel/1162964896078539
+  at: '2026-11-20T21:01:07+00:00'
+- platform: threads
+  item: short1
+  state: public
+  id: '18132954314494382'
+  url: https://www.threads.com/@chosenmaths3435/post/Df-kqoixNdH
+  at: '2026-11-20T21:01:44+00:00'
+- platform: bluesky
+  item: short1
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3n2riaqldhg2h
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3n2riaqldhg2h
+  at: '2026-11-20T21:01:48+00:00'
+- platform: instagram
+  item: short2
+  state: public
+  id: '18145096861722836'
+  url: https://www.instagram.com/reel/DgBCepkIuoP/
+  at: '2026-11-21T20:00:55+00:00'
+- platform: facebook
+  item: short2
+  state: public
+  id: '1690018719440056'
+  url: https://www.facebook.com/reel/1690018719440056
+  at: '2026-11-21T20:01:06+00:00'
+- platform: facebook
+  item: short2
+  state: failed
+  at: '2026-11-21T20:03:07+00:00'
+  note: 'requests.exceptions.ReadTimeout: HTTPSConnectionPool(host=''graph.facebook.com'',
+    port=443): Read timed out. (read timeout=120)'
+- platform: threads
+  item: short2
+  state: public
+  id: '18454088065120702'
+  url: https://www.threads.com/@chosenmaths3435/post/DgBC0kkBJUq
+  at: '2026-11-21T20:04:03+00:00'
+- platform: bluesky
+  item: short2
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3n2tvijxqvr2f
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3n2tvijxqvr2f
+  at: '2026-11-21T20:04:08+00:00'
