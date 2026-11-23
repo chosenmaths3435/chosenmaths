@@ -2,20 +2,68 @@
   item: long
   id: pjpvJmIGBbs
   url: https://youtu.be/pjpvJmIGBbs
-  state: scheduled
+  state: public
   at: '2026-11-13T02:37:28+00:00'
   publish_at: '2026-11-22T20:00:00Z'
 - platform: youtube
   item: short1
   id: -BJBttaAQ2I
   url: https://youtu.be/-BJBttaAQ2I
-  state: scheduled
+  state: public
   at: '2026-11-13T02:37:32+00:00'
   publish_at: '2026-11-22T20:15:00Z'
 - platform: youtube
   item: short2
   id: SBpZAiWoQCg
   url: https://youtu.be/SBpZAiWoQCg
-  state: scheduled
+  state: public
   at: '2026-11-13T02:37:35+00:00'
   publish_at: '2026-11-23T20:00:00Z'
+- platform: instagram
+  item: short1
+  state: public
+  id: '18054152282606025'
+  url: https://www.instagram.com/reel/DgDuJGegNWA/
+  at: '2026-11-22T21:01:08+00:00'
+- platform: facebook
+  item: short1
+  state: public
+  id: '1131941706373285'
+  url: https://www.facebook.com/reel/1131941706373285
+  at: '2026-11-22T21:01:19+00:00'
+- platform: threads
+  item: short1
+  state: public
+  id: '18112934627628438'
+  url: https://www.threads.com/@chosenmaths3435/post/DgDuRtUxFwc
+  at: '2026-11-22T21:02:14+00:00'
+- platform: bluesky
+  item: short1
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3n2wj7kcoyp2d
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3n2wj7kcoyp2d
+  at: '2026-11-22T21:02:20+00:00'
+- platform: instagram
+  item: short2
+  state: public
+  id: '17992796898070230'
+  url: https://www.instagram.com/reel/DgGMLAgxcZw/
+  at: '2026-11-23T20:01:55+00:00'
+- platform: facebook
+  item: short2
+  state: public
+  id: '1698171074998809'
+  url: https://www.facebook.com/reel/1698171074998809
+  at: '2026-11-23T20:02:06+00:00'
+- platform: threads
+  item: short2
+  state: public
+  id: '18104766722426296'
+  url: https://www.threads.com/@chosenmaths3435/post/DgGMTFdM-5H
+  at: '2026-11-23T20:02:45+00:00'
+- platform: bluesky
+  item: short2
+  state: public
+  id: at://did:plc:75h7ojf26fqi2sfttdckdbtp/app.bsky.feed.post/3n2ywe3npd62x
+  url: https://bsky.app/profile/chosenmaths3435.bsky.social/post/3n2ywe3npd62x
+  at: '2026-11-23T20:02:51+00:00'
